@@ -1,0 +1,3609 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPA Competitor Fare Intelligence · v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Brand */
+  --navy:#0a2540;
+  --navy-dark:#061a30;
+  --navy-mid:#12365c;
+  --navy-soft:#1e3a5f;
+  --gold:#c9a961;
+  --gold-light:#e8dcb7;
+  --gold-dark:#9e8348;
+
+  /* Neutrals */
+  --bg:#faf8f3;
+  --white:#ffffff;
+  --surface:#ffffff;
+  --off-white:#f5f2ea;
+  --text:#1a1a1a;
+  --text-muted:#6b7280;
+  --text-subtle:#9ca3af;
+  --border:#e5e2d8;
+  --border-strong:#c9c5b8;
+  --hover:#f7f4ec;
+
+  /* Status */
+  --success:#059669;
+  --success-bg:#ecfdf5;
+  --danger:#dc2626;
+  --danger-bg:#fef2f2;
+  --warning:#d97706;
+  --warning-bg:#fffbeb;
+  --info:#2563eb;
+  --info-bg:#eff6ff;
+
+  /* Radius */
+  --radius-sm:6px;
+  --radius:8px;
+  --radius-lg:12px;
+
+  /* Font */
+  --font-serif:'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+*{box-sizing:border-box;}
+
+html,body{margin:0;padding:0;}
+
+body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text);
+  font-size:13px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+button,input,select,textarea{
+  font-family:inherit;
+  font-size:13px;
+  color:inherit;
+}
+
+button{cursor:pointer;}
+
+a{color:var(--info);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+.topbar{
+  height:64px;
+  background:var(--navy);
+  border-bottom:2px solid var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  color:#fff;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border-radius:6px;
+  background:var(--gold);
+  color:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-serif);
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:-0.5px;
+}
+
+.brand-text{display:flex;flex-direction:column;}
+
+.brand-title{
+  font-family:var(--font-serif);
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:0.2px;
+  line-height:1.1;
+}
+
+.brand-sub{
+  font-size:10px;
+  color:var(--gold-light);
+  letter-spacing:1.5px;
+  margin-top:3px;
+  font-weight:500;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.last-update{
+  color:var(--gold-light);
+  font-size:11px;
+  margin-right:8px;
+  font-weight:500;
+}
+
+.last-update b{color:#fff;font-weight:600;}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn{
+  border:none;
+  border-radius:var(--radius);
+  padding:9px 14px;
+  font-weight:600;
+  font-size:12.5px;
+  letter-spacing:0.2px;
+  transition:all 0.12s ease;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.btn-primary{
+  background:var(--gold);
+  color:var(--navy);
+}
+.btn-primary:hover{background:var(--gold-light);}
+
+.btn-navy{
+  background:var(--navy);
+  color:#fff;
+}
+.btn-navy:hover{background:var(--navy-soft);}
+
+.btn-outline-gold{
+  background:transparent;
+  color:var(--gold-light);
+  border:1px solid rgba(232,220,183,0.35);
+}
+.btn-outline-gold:hover{background:rgba(232,220,183,0.1);}
+
+.btn-success{background:var(--success);color:#fff;}
+.btn-success:hover{background:#047857;}
+
+.btn-light{background:var(--off-white);color:var(--text);border:1px solid var(--border);}
+.btn-light:hover{background:var(--hover);border-color:var(--border-strong);}
+
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid #fecaca;}
+.btn-danger:hover{background:#fecaca;}
+
+.btn-warning{background:var(--warning-bg);color:var(--warning);border:1px solid #fde68a;}
+.btn-warning:hover{background:#fde68a;}
+
+.btn-ghost{background:transparent;color:var(--text-muted);}
+.btn-ghost:hover{background:var(--hover);color:var(--text);}
+
+.btn-small{padding:5px 10px;font-size:11px;}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.layout{
+  display:flex;
+  min-height:calc(100vh - 64px);
+}
+
+.sidebar{
+  width:222px;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:18px 12px;
+  position:sticky;
+  top:64px;
+  height:calc(100vh - 64px);
+  overflow-y:auto;
+  flex-shrink:0;
+}
+
+.menu-section{margin-bottom:16px;}
+
+.menu-heading{
+  font-size:10px;
+  color:var(--text-subtle);
+  letter-spacing:1.5px;
+  padding:8px 12px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.menu-item{
+  padding:9px 12px;
+  margin-bottom:2px;
+  border-radius:var(--radius);
+  font-weight:500;
+  font-size:12.5px;
+  cursor:pointer;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:9px;
+  transition:all 0.12s ease;
+}
+
+.menu-item:hover{background:var(--hover);}
+
+.menu-item.active{
+  background:var(--navy);
+  color:#fff;
+  font-weight:600;
+}
+
+.menu-item.active .menu-icon{color:var(--gold);}
+
+.menu-item.disabled{
+  color:var(--text-subtle);
+  cursor:not-allowed;
+  opacity:0.6;
+}
+
+.menu-icon{
+  width:16px;
+  color:var(--text-muted);
+  font-size:14px;
+  text-align:center;
+}
+
+.menu-badge{
+  margin-left:auto;
+  font-size:9px;
+  background:var(--gold-light);
+  color:var(--gold-dark);
+  padding:2px 6px;
+  border-radius:4px;
+  font-weight:700;
+  letter-spacing:0.3px;
+}
+
+.main{
+  flex:1;
+  min-width:0;
+  padding:24px;
+}
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
+.view{display:none;}
+.view.active{display:block;}
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+.page-header{
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.page-title{
+  font-family:var(--font-serif);
+  font-size:28px;
+  font-weight:600;
+  color:var(--navy);
+  letter-spacing:-0.3px;
+  line-height:1.1;
+}
+
+.page-desc{
+  color:var(--text-muted);
+  margin-top:6px;
+  font-size:13px;
+  max-width:640px;
+}
+
+.page-actions{display:flex;gap:8px;}
+
+/* =========================================================
+   PANEL
+========================================================= */
+.panel{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:20px;
+  margin-bottom:16px;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.panel-title{
+  font-family:var(--font-serif);
+  font-size:16px;
+  font-weight:600;
+  color:var(--navy);
+  letter-spacing:-0.1px;
+}
+
+.panel-sub{
+  color:var(--text-muted);
+  font-size:12px;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+/* =========================================================
+   SUBSECTION HEADERS
+========================================================= */
+.subsection-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:12px 0 12px 0;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+
+.subsection-title{
+  font-size:11.5px;
+  font-weight:700;
+  color:var(--navy);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.subsection-badge{
+  background:var(--off-white);
+  color:var(--text-muted);
+  padding:2px 8px;
+  border-radius:4px;
+  font-size:10px;
+  font-weight:600;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(140px,1fr));
+  gap:12px;
+}
+.form-grid-3{grid-template-columns:repeat(3,minmax(160px,1fr));}
+.form-grid-5{grid-template-columns:repeat(5,minmax(130px,1fr));}
+.form-grid-6{grid-template-columns:repeat(6,minmax(120px,1fr));}
+
+.field{display:flex;flex-direction:column;gap:5px;}
+.field-wide{grid-column:span 2;}
+.field-full{grid-column:1 / -1;}
+.field-3{grid-column:span 3;}
+
+.field label{
+  font-size:11px;
+  font-weight:600;
+  color:var(--text-muted);
+  letter-spacing:0.3px;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:8px 10px;
+  background:#fff;
+  color:var(--text);
+  transition:border-color 0.12s ease;
+}
+
+.field input,
+.field select{height:36px;}
+
+.field textarea{
+  min-height:64px;
+  resize:vertical;
+  font-family:inherit;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color:var(--navy);
+  box-shadow:0 0 0 2px rgba(10,37,64,0.08);
+}
+
+.auto-field{
+  background:var(--off-white) !important;
+  font-weight:600;
+  color:var(--navy);
+  font-family:var(--font-mono);
+}
+
+.currency-hint{
+  font-size:10.5px;
+  color:var(--text-muted);
+  margin-top:2px;
+  font-family:var(--font-mono);
+}
+
+.required::after{
+  content:" *";
+  color:var(--danger);
+}
+
+.form-actions{
+  margin-top:18px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+
+/* =========================================================
+   KPI CARDS
+========================================================= */
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.kpi{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:16px;
+  min-height:104px;
+  position:relative;
+}
+
+.kpi-label{
+  font-size:10.5px;
+  font-weight:700;
+  color:var(--text-muted);
+  letter-spacing:0.7px;
+  text-transform:uppercase;
+}
+
+.kpi-value{
+  font-family:var(--font-serif);
+  font-size:24px;
+  font-weight:600;
+  margin-top:10px;
+  color:var(--navy);
+  line-height:1.1;
+  letter-spacing:-0.5px;
+}
+
+.kpi-sub{
+  color:var(--text-muted);
+  font-size:11px;
+  margin-top:6px;
+  line-height:1.3;
+}
+
+.kpi-hero{
+  background:var(--navy);
+  color:#fff;
+  border-color:var(--navy);
+}
+.kpi-hero .kpi-label{color:var(--gold-light);}
+.kpi-hero .kpi-value{color:#fff;}
+.kpi-hero .kpi-sub{color:rgba(255,255,255,0.7);}
+
+.status-red{color:var(--danger) !important;}
+.status-green{color:var(--success) !important;}
+.status-orange{color:var(--warning) !important;}
+.status-blue{color:var(--info) !important;}
+
+.kpi-warning-banner{
+  grid-column:1 / -1;
+  background:var(--warning-bg);
+  border:1px solid #fde68a;
+  color:var(--warning);
+  padding:10px 14px;
+  border-radius:var(--radius);
+  font-size:12px;
+  font-weight:500;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+.filters{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(130px,1fr));
+  gap:10px;
+}
+
+.search-row{
+  display:flex;
+  gap:8px;
+  align-items:end;
+  margin-top:12px;
+}
+
+.search-row .search-box{flex:1;}
+
+/* =========================================================
+   TABLES
+========================================================= */
+.table-wrap{
+  width:100%;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:#fff;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+}
+
+th{
+  text-align:left;
+  font-size:10.5px;
+  color:var(--navy);
+  padding:11px 10px;
+  background:var(--off-white);
+  border-bottom:1px solid var(--border-strong);
+  white-space:nowrap;
+  position:sticky;
+  top:0;
+  z-index:2;
+  font-weight:700;
+  letter-spacing:0.4px;
+  text-transform:uppercase;
+}
+
+td{
+  padding:10px;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+  font-size:12.5px;
+}
+
+tbody tr:hover{background:var(--hover);}
+
+.route-cell{font-weight:600;color:var(--navy);}
+.airline-cell{font-weight:700;font-family:var(--font-mono);}
+.fare-cell{font-weight:700;color:var(--navy);}
+.usd-cell{color:var(--text-muted);font-size:11px;font-family:var(--font-mono);}
+
+/* =========================================================
+   TAGS
+========================================================= */
+.tag{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:4px;
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:0.3px;
+  white-space:nowrap;
+}
+
+.tag-navy{color:#fff;background:var(--navy);}
+.tag-gold{color:var(--gold-dark);background:var(--gold-light);}
+.tag-blue{color:#1e40af;background:#dbeafe;}
+.tag-green{color:#065f46;background:#d1fae5;}
+.tag-red{color:#991b1b;background:#fee2e2;}
+.tag-orange{color:#92400e;background:#fef3c7;}
+.tag-purple{color:#5b21b6;background:#ede9fe;}
+.tag-gray{color:var(--text-muted);background:var(--off-white);}
+
+.tag-9g{background:var(--gold);color:var(--navy);}
+
+/* =========================================================
+   ANALYSIS GRID
+========================================================= */
+.analysis-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.analysis-grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+/* =========================================================
+   CHART (SVG)
+========================================================= */
+.chart-container{
+  background:#fff;
+  border-radius:var(--radius);
+  padding:12px;
+  position:relative;
+  overflow-x:auto;
+}
+
+.chart-svg{display:block;width:100%;min-width:600px;}
+
+.chart-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:12px 4px 0 4px;
+  border-top:1px dashed var(--border);
+  margin-top:8px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:11.5px;
+  color:var(--text);
+  font-weight:500;
+}
+
+.legend-swatch{
+  width:14px;
+  height:3px;
+  border-radius:2px;
+}
+
+.legend-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+/* =========================================================
+   EMPTY / DIVIDER
+========================================================= */
+.empty{
+  text-align:center;
+  color:var(--text-muted);
+  padding:32px !important;
+  font-size:13px;
+  font-style:italic;
+}
+
+.section-divider{
+  height:1px;
+  background:var(--border);
+  margin:16px 0;
+}
+
+/* =========================================================
+   INSIGHT CARDS
+========================================================= */
+.insight-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.insight{
+  padding:14px 16px;
+  border-left:3px solid var(--navy);
+  background:var(--off-white);
+  border-radius:0 var(--radius) var(--radius) 0;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.insight-title{
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:4px;
+}
+
+.insight-red{border-left-color:var(--danger);}
+.insight-red .insight-title{color:var(--danger);}
+.insight-green{border-left-color:var(--success);}
+.insight-green .insight-title{color:var(--success);}
+.insight-gold{border-left-color:var(--gold-dark);}
+.insight-gold .insight-title{color:var(--gold-dark);}
+
+/* =========================================================
+   MODAL / CONFIRM
+========================================================= */
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(6,26,48,0.5);
+  z-index:2000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-backdrop.active{display:flex;}
+
+.modal{
+  background:#fff;
+  border-radius:var(--radius-lg);
+  padding:22px;
+  max-width:480px;
+  width:100%;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-title{
+  font-family:var(--font-serif);
+  font-size:18px;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+
+.modal-body{color:var(--text);font-size:13px;line-height:1.5;margin-bottom:16px;}
+
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+
+/* =========================================================
+   FX RATES TABLE
+========================================================= */
+.fx-table input{
+  width:120px;
+  height:32px;
+  padding:6px 8px;
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  font-family:var(--font-mono);
+  text-align:right;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:1400px){
+  .kpis{grid-template-columns:repeat(3,1fr);}
+  .form-grid,.form-grid-5,.form-grid-6{grid-template-columns:repeat(3,1fr);}
+  .filters{grid-template-columns:repeat(3,1fr);}
+  .analysis-grid-3{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .form-grid,.form-grid-3,.form-grid-5,.form-grid-6{grid-template-columns:repeat(2,1fr);}
+  .filters{grid-template-columns:repeat(2,1fr);}
+  .analysis-grid,.analysis-grid-3{grid-template-columns:1fr;}
+  .kpis{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:600px){
+  .main{padding:12px;}
+  .topbar{padding:0 12px;}
+  .last-update{display:none;}
+  .form-grid,.form-grid-3,.form-grid-5,.form-grid-6,.filters,.kpis{grid-template-columns:1fr;}
+  .field-wide,.field-3{grid-column:span 1;}
+  .page-title{font-size:22px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">9G</div>
+    <div class="brand-text">
+      <div class="brand-title">Sun PhuQuoc Airways</div>
+      <div class="brand-sub">COMPETITOR FARE INTELLIGENCE · V4</div>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <span class="last-update">Last updated <b id="lastUpdated">—</b></span>
+    <button class="btn btn-outline-gold btn-small" onclick="exportCSV()">Export CSV</button>
+    <button class="btn btn-primary btn-small" onclick="openInput()">+ Add fare check</button>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+<aside class="sidebar">
+
+  <div class="menu-section">
+    <div class="menu-heading">Fare intelligence</div>
+    <div class="menu-item active" data-view="overview" onclick="switchView('overview')">
+      <span class="menu-icon">▣</span> Overview
+    </div>
+    <div class="menu-item" data-view="input" onclick="switchView('input')">
+      <span class="menu-icon">✈</span> Fare check input
+    </div>
+    <div class="menu-item" data-view="history" onclick="switchView('history')">
+      <span class="menu-icon">▤</span> Check history
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-heading">Analysis</div>
+    <div class="menu-item" data-view="route" onclick="switchView('route')">
+      <span class="menu-icon">▦</span> Route analysis
+    </div>
+    <div class="menu-item" data-view="booking" onclick="switchView('booking')">
+      <span class="menu-icon">◷</span> Booking window
+    </div>
+    <div class="menu-item" data-view="channel" onclick="switchView('channel')">
+      <span class="menu-icon">⇄</span> Channel analysis
+    </div>
+    <div class="menu-item" data-view="season" onclick="switchView('season')">
+      <span class="menu-icon">☀</span> Season analysis
+    </div>
+    <div class="menu-item" data-view="movement" onclick="switchView('movement')">
+      <span class="menu-icon">⇅</span> Price movement
+    </div>
+    <div class="menu-item" data-view="insights" onclick="switchView('insights')">
+      <span class="menu-icon">◆</span> Insights
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-heading">Configuration</div>
+    <div class="menu-item" data-view="settings" onclick="switchView('settings')">
+      <span class="menu-icon">⚙</span> Settings & FX
+    </div>
+  </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+<main class="main">
+
+<!-- ===============================================
+     VIEW: OVERVIEW
+=============================================== -->
+<section class="view active" id="view-overview">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Competitor fare dashboard</div>
+      <div class="page-desc">Compare 9G fares with competitor OALs by route, cabin, booking window, season and distribution channel. All amounts auto-normalized to USD for cross-currency comparison.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-navy btn-small" onclick="switchView('input')">+ New fare check</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <section class="kpis" id="kpiSection">
+
+    <div class="kpi">
+      <div class="kpi-label">Records</div>
+      <div class="kpi-value" id="kpiRecords">0</div>
+      <div class="kpi-sub">Filtered fare checks</div>
+    </div>
+
+    <div class="kpi kpi-hero">
+      <div class="kpi-label">9G lowest fare</div>
+      <div class="kpi-value" id="kpi9G">—</div>
+      <div class="kpi-sub" id="kpi9GSub">Lowest 9G total</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">Market lowest</div>
+      <div class="kpi-value" id="kpiMarket">—</div>
+      <div class="kpi-sub" id="kpiMarketAirline">Competitor</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">9G vs market gap</div>
+      <div class="kpi-value" id="kpiGap">—</div>
+      <div class="kpi-sub" id="kpiGapPercent">vs market lowest</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">Airlines tracked</div>
+      <div class="kpi-value" id="kpiAirlines">0</div>
+      <div class="kpi-sub" id="kpiAirlineList">—</div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">Channels covered</div>
+      <div class="kpi-value" id="kpiChannels">0</div>
+      <div class="kpi-sub">Check sources</div>
+    </div>
+
+  </section>
+
+  <!-- FILTER PANEL -->
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Dashboard filter</div>
+        <div class="panel-sub">Narrow the dataset before reviewing KPIs and analysis. For meaningful gap comparison, filter by route + cabin at minimum.</div>
+      </div>
+      <button class="btn btn-light btn-small" onclick="resetFilters()">Reset filter</button>
+    </div>
+
+    <div class="filters">
+      <div class="field">
+        <label>Origin</label>
+        <select id="filterOrigin" onchange="applyFilters()">
+          <option value="">All origins</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Destination</label>
+        <select id="filterDestination" onchange="applyFilters()">
+          <option value="">All destinations</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Airline</label>
+        <select id="filterAirline" onchange="applyFilters()">
+          <option value="">All airlines</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Cabin</label>
+        <select id="filterCabin" onchange="applyFilters()">
+          <option value="">All cabins</option>
+          <option>Economy</option>
+          <option>Premium economy</option>
+          <option>Business</option>
+          <option>First</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Season</label>
+        <select id="filterSeason" onchange="applyFilters()">
+          <option value="">All seasons</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>DTD group</label>
+        <select id="filterDTD" onchange="applyFilters()">
+          <option value="">All booking windows</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Channel type</label>
+        <select id="filterChannelType" onchange="applyFilters()">
+          <option value="">All channel types</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Channel name</label>
+        <select id="filterChannelName" onchange="applyFilters()">
+          <option value="">All channels</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Point of sale</label>
+        <select id="filterPOS" onchange="applyFilters()">
+          <option value="">All POS</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Travel from</label>
+        <input type="date" id="filterTravelFrom" onchange="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Travel to</label>
+        <input type="date" id="filterTravelTo" onchange="applyFilters()">
+      </div>
+
+      <div class="field">
+        <label>Check date</label>
+        <input type="date" id="filterCheckDate" onchange="applyFilters()">
+      </div>
+    </div>
+
+    <div class="search-row">
+      <div class="field search-box">
+        <label>Search</label>
+        <input type="text" id="globalSearch" placeholder="Route, airline, flight, channel, snapshot, notes…" oninput="applyFilters()">
+      </div>
+    </div>
+  </section>
+
+  <!-- ANALYSIS SUMMARY (default overview shows compact analysis) -->
+  <div class="analysis-grid-3">
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Booking window</div>
+          <div class="panel-sub">9G vs competitors by DTD (USD).</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DTD</th><th>9G low</th><th>Comp low</th><th>Gap</th><th>Checks</th>
+            </tr>
+          </thead>
+          <tbody id="dtdAnalysis"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Channel</div>
+          <div class="panel-sub">Web, App, OTA, GDS and others (USD).</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Channel</th><th>9G low</th><th>Comp low</th><th>Gap</th><th>Checks</th>
+            </tr>
+          </thead>
+          <tbody id="channelAnalysis"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Season</div>
+          <div class="panel-sub">Fare position across travel seasons (USD).</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Season</th><th>9G low</th><th>Comp low</th><th>Gap</th><th>Checks</th>
+            </tr>
+          </thead>
+          <tbody id="seasonAnalysis"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+</section>
+
+
+<!-- ===============================================
+     VIEW: INPUT
+=============================================== -->
+<section class="view" id="view-input">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title" id="inputTitle">Manual fare check input</div>
+      <div class="page-desc">Enter one airline · channel · fare per record. Use <b>Clone</b> or <b>Save &amp; add next channel</b> to quickly log multiple channels for the same route.</div>
+    </div>
+    <div class="page-actions">
+      <span class="tag tag-blue" id="editStatus">New record</span>
+    </div>
+  </div>
+
+  <section class="panel" id="inputPanel">
+
+    <!-- CHECK INFO -->
+    <div class="subsection-header">
+      <div class="subsection-title">1 · Check information</div>
+      <span class="subsection-badge">When / who / snapshot</span>
+    </div>
+
+    <div class="form-grid form-grid-5">
+
+      <div class="field">
+        <label class="required">Check date</label>
+        <input type="date" id="checkDate" onchange="calculateDTD()">
+      </div>
+
+      <div class="field">
+        <label>Check time</label>
+        <input type="time" id="checkTime">
+      </div>
+
+      <div class="field">
+        <label class="required">Travel date</label>
+        <input type="date" id="travelDate" onchange="calculateDTD()">
+      </div>
+
+      <div class="field">
+        <label>DTD</label>
+        <input type="text" id="dtd" class="auto-field" readonly>
+      </div>
+
+      <div class="field">
+        <label>DTD group</label>
+        <input type="text" id="dtdGroup" class="auto-field" readonly>
+      </div>
+
+      <div class="field">
+        <label>Snapshot / batch</label>
+        <input type="text" id="snapshot" placeholder="Ex: WEEKLY-SEP-W1">
+      </div>
+
+      <div class="field">
+        <label class="required">Season</label>
+        <select id="season">
+          <option>Low season</option>
+          <option>Low-shoulder</option>
+          <option>Shoulder</option>
+          <option>Shoulder-high</option>
+          <option>Peak season</option>
+          <option>Summer</option>
+          <option>Tet</option>
+          <option>National holiday</option>
+          <option>Christmas / New year</option>
+          <option>Weekend</option>
+          <option>Special event</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Day type</label>
+        <select id="dayType">
+          <option>Weekday</option>
+          <option>Weekend</option>
+          <option>Holiday</option>
+          <option>Special period</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Checker (sales)</label>
+        <input type="text" id="checker" placeholder="Ex: Quang">
+      </div>
+
+      <div class="field">
+        <label>Trip type</label>
+        <select id="tripType">
+          <option>One way</option>
+          <option>Round trip</option>
+          <option>Multi-city</option>
+          <option>Open jaw</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- ROUTE / FLIGHT -->
+    <div class="subsection-header">
+      <div class="subsection-title">2 · Route &amp; flight</div>
+      <span class="subsection-badge">O&amp;D / airline / connections</span>
+    </div>
+
+    <div class="form-grid form-grid-5">
+
+      <div class="field">
+        <label class="required">Origin</label>
+        <select id="origin"></select>
+      </div>
+
+      <div class="field">
+        <label class="required">Destination</label>
+        <select id="destination"></select>
+      </div>
+
+      <div class="field">
+        <label class="required">Airline</label>
+        <select id="airline"></select>
+      </div>
+
+      <div class="field">
+        <label>Flight number</label>
+        <input type="text" id="flightNumber" placeholder="9G123" oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+      <div class="field">
+        <label>Cabin</label>
+        <select id="cabin">
+          <option>Economy</option>
+          <option>Premium economy</option>
+          <option>Business</option>
+          <option>First</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Departure time</label>
+        <input type="time" id="departureTime">
+      </div>
+
+      <div class="field">
+        <label>Arrival time</label>
+        <input type="time" id="arrivalTime">
+      </div>
+
+      <div class="field">
+        <label>Flight type</label>
+        <select id="flightType" onchange="toggleConnectionFields()">
+          <option>Non-stop</option>
+          <option>Direct (1 stop)</option>
+          <option>Connecting</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Aircraft</label>
+        <input type="text" id="aircraft" placeholder="A321" oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+      <div class="field">
+        <label>Availability</label>
+        <select id="availability">
+          <option>Available</option>
+          <option>Low availability</option>
+          <option>Sold out</option>
+          <option>Unknown</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- CONNECTION (conditional display) -->
+    <div id="connectionBox" style="display:none;">
+      <div class="subsection-header">
+        <div class="subsection-title">2b · Connection details</div>
+        <span class="subsection-badge">For connecting / 1-stop only</span>
+      </div>
+
+      <div class="form-grid form-grid-5">
+        <div class="field">
+          <label>Transit airport 1</label>
+          <select id="transit1"></select>
+        </div>
+        <div class="field">
+          <label>Layover 1 (mins)</label>
+          <input type="number" id="layover1" min="0" placeholder="120">
+        </div>
+        <div class="field">
+          <label>Segment 2 flight</label>
+          <input type="text" id="segment2" placeholder="TK164" oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div class="field">
+          <label>Transit airport 2</label>
+          <select id="transit2"></select>
+        </div>
+        <div class="field">
+          <label>Total journey (hrs)</label>
+          <input type="number" id="totalJourney" min="0" step="0.5" placeholder="14.5">
+        </div>
+      </div>
+    </div>
+
+    <!-- CHANNEL -->
+    <div class="subsection-header">
+      <div class="subsection-title">3 · Distribution channel</div>
+      <span class="subsection-badge">Where the fare was seen</span>
+    </div>
+
+    <div class="form-grid form-grid-5">
+
+      <div class="field">
+        <label class="required">Channel type</label>
+        <select id="channelType" onchange="updateChannelNames()"></select>
+      </div>
+
+      <div class="field">
+        <label class="required">Channel name</label>
+        <select id="channelName"></select>
+      </div>
+
+      <div class="field">
+        <label>Fare source type</label>
+        <select id="fareSourceType">
+          <option>Published fare</option>
+          <option>Promotional fare</option>
+          <option>Private fare</option>
+          <option>Negotiated fare</option>
+          <option>Member fare</option>
+          <option>Corporate fare</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="required">Point of sale</label>
+        <select id="pointOfSale"></select>
+      </div>
+
+      <div class="field">
+        <label>Pax type</label>
+        <select id="paxType">
+          <option>Adult</option>
+          <option>Child</option>
+          <option>Infant</option>
+          <option>Adult + Child</option>
+          <option>Group (10+)</option>
+        </select>
+      </div>
+
+      <div class="field field-wide">
+        <label>Source reference (URL / PCC / remark)</label>
+        <input type="text" id="sourceReference" placeholder="Website URL / GDS PCC / booking reference">
+      </div>
+
+      <div class="field field-3">
+        <label>Screenshot / evidence URL</label>
+        <input type="text" id="screenshotUrl" placeholder="Google Drive / SharePoint URL of screenshot proof">
+      </div>
+
+    </div>
+
+    <!-- FARE -->
+    <div class="subsection-header">
+      <div class="subsection-title">4 · Fare details</div>
+      <span class="subsection-badge">Amounts in check currency</span>
+    </div>
+
+    <div class="form-grid form-grid-5">
+
+      <div class="field">
+        <label class="required">Currency</label>
+        <select id="currency" onchange="updateFxRateFromDefault();calculateUSD();">
+        </select>
+      </div>
+
+      <div class="field">
+        <label>FX rate (1 USD = ?)</label>
+        <input type="number" id="fxRate" min="0" step="any" oninput="calculateUSD()">
+        <div class="currency-hint" id="fxHint">—</div>
+      </div>
+
+      <div class="field">
+        <label>Base fare</label>
+        <input type="number" id="baseFare" min="0" step="any" oninput="calculateTotal()">
+      </div>
+
+      <div class="field">
+        <label>Tax / surcharge</label>
+        <input type="number" id="tax" min="0" step="any" oninput="calculateTotal()">
+      </div>
+
+      <div class="field">
+        <label>Other fees</label>
+        <input type="number" id="otherFee" min="0" step="any" oninput="calculateTotal()">
+      </div>
+
+      <div class="field">
+        <label class="required">Total fare</label>
+        <input type="number" id="totalFare" min="0" step="any" oninput="calculateUSD()">
+      </div>
+
+      <div class="field">
+        <label>Total in USD</label>
+        <input type="text" id="totalUSD" class="auto-field" readonly>
+      </div>
+
+      <div class="field">
+        <label>Ancillary bundle</label>
+        <input type="number" id="ancillary" min="0" step="any" placeholder="Baggage + seat + meal add-ons" oninput="calculateAllIn()">
+      </div>
+
+      <div class="field">
+        <label>All-in fare (fare + ancillary)</label>
+        <input type="text" id="allInFare" class="auto-field" readonly>
+      </div>
+
+      <div class="field">
+        <label>Fare family / brand</label>
+        <input type="text" id="fareFamily" placeholder="Eco / Deluxe / Flex…">
+      </div>
+
+      <div class="field">
+        <label>Booking class (RBD)</label>
+        <input type="text" id="bookingClass" placeholder="Y / M / Q…" oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+      <div class="field">
+        <label>Checked baggage (kg)</label>
+        <input type="text" id="checkedBaggage" placeholder="20">
+      </div>
+
+      <div class="field">
+        <label>Cabin baggage (kg)</label>
+        <input type="text" id="cabinBaggage" placeholder="7">
+      </div>
+
+      <div class="field">
+        <label>Meal</label>
+        <select id="meal">
+          <option>Unknown</option>
+          <option>Included</option>
+          <option>Buy-on-board</option>
+          <option>Not included</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Refundable</label>
+        <select id="refundable">
+          <option>Unknown</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>With fee</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Changeable</label>
+        <select id="changeable">
+          <option>Unknown</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>With fee</option>
+        </select>
+      </div>
+
+      <div class="field field-full">
+        <label>Fare rules / conditions</label>
+        <textarea id="fareRules" placeholder="Min stay, advance purchase, blackout, combinability rules…"></textarea>
+      </div>
+
+      <div class="field field-full">
+        <label>Notes</label>
+        <textarea id="notes" placeholder="Promotion condition, competitor action, seat map remark…"></textarea>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-success" id="saveButton" onclick="saveRecord()">Save fare record</button>
+      <button class="btn btn-navy" onclick="saveAndNext()">Save &amp; add next channel</button>
+      <button class="btn btn-light" onclick="clearForm()">Clear form</button>
+      <button class="btn btn-danger" id="cancelEditButton" onclick="cancelEdit()" style="display:none;">Cancel edit</button>
+    </div>
+
+  </section>
+
+</section>
+
+
+<!-- ===============================================
+     VIEW: HISTORY
+=============================================== -->
+<section class="view" id="view-history">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Fare check history</div>
+      <div class="page-desc">All manual fare checks saved in this browser. Use <b>Clone</b> to duplicate a record with a new ID for fast multi-channel entry.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-light btn-small" onclick="exportCSV()">Export CSV</button>
+      <button class="btn btn-danger btn-small" onclick="clearAllRecords()">Delete all</button>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>Travel</th>
+            <th>DTD</th>
+            <th>Season</th>
+            <th>Route</th>
+            <th>Airline</th>
+            <th>Flight</th>
+            <th>Cabin</th>
+            <th>Channel</th>
+            <th>POS</th>
+            <th>Fare type</th>
+            <th>Total</th>
+            <th>USD</th>
+            <th>All-in USD</th>
+            <th>Baggage</th>
+            <th>Snapshot</th>
+            <th>Checker</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="fareTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</section>
+
+
+<!-- ===============================================
+     VIEW: ROUTE ANALYSIS
+=============================================== -->
+<section class="view" id="view-route">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Route analysis</div>
+      <div class="page-desc">Deep-dive per route with 9G position vs all tracked competitors. USD-normalized.</div>
+    </div>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Cabin</th>
+            <th>9G low</th>
+            <th>Market low</th>
+            <th>Market avg</th>
+            <th>Gap vs low</th>
+            <th>Position</th>
+            <th>Checks</th>
+            <th>Airlines tracked</th>
+          </tr>
+        </thead>
+        <tbody id="routeAnalysis"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+
+<!-- ===============================================
+     VIEW: BOOKING WINDOW
+=============================================== -->
+<section class="view" id="view-booking">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Booking window analysis</div>
+      <div class="page-desc">How 9G compares with competitors across DTD groups.</div>
+    </div>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>DTD group</th>
+            <th>9G low (USD)</th>
+            <th>Comp low (USD)</th>
+            <th>Gap (USD)</th>
+            <th>Gap %</th>
+            <th>9G checks</th>
+            <th>Comp checks</th>
+          </tr>
+        </thead>
+        <tbody id="dtdAnalysisFull"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+
+<!-- ===============================================
+     VIEW: CHANNEL ANALYSIS
+=============================================== -->
+<section class="view" id="view-channel">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Channel analysis</div>
+      <div class="page-desc">Fare position by distribution channel.</div>
+    </div>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Channel</th>
+            <th>9G low (USD)</th>
+            <th>Comp low (USD)</th>
+            <th>Gap (USD)</th>
+            <th>Gap %</th>
+            <th>9G checks</th>
+            <th>Comp checks</th>
+          </tr>
+        </thead>
+        <tbody id="channelAnalysisFull"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+
+<!-- ===============================================
+     VIEW: SEASON ANALYSIS
+=============================================== -->
+<section class="view" id="view-season">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Season analysis</div>
+      <div class="page-desc">Fare position across travel seasons.</div>
+    </div>
+  </div>
+  <section class="panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Season</th>
+            <th>9G low (USD)</th>
+            <th>Comp low (USD)</th>
+            <th>Gap (USD)</th>
+            <th>Gap %</th>
+            <th>9G checks</th>
+            <th>Comp checks</th>
+          </tr>
+        </thead>
+        <tbody id="seasonAnalysisFull"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+
+
+<!-- ===============================================
+     VIEW: PRICE MOVEMENT
+=============================================== -->
+<section class="view" id="view-movement">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Price movement over time</div>
+      <div class="page-desc">Track how each airline's fare has moved for a specific route + cabin + travel date. Line chart plotted from check-date snapshots (USD).</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Filter movement</div>
+        <div class="panel-sub">Pick a specific route + cabin + travel date to see the price curve per airline.</div>
+      </div>
+    </div>
+
+    <div class="form-grid form-grid-5">
+      <div class="field">
+        <label>Origin</label>
+        <select id="movOrigin" onchange="renderMovement()"></select>
+      </div>
+      <div class="field">
+        <label>Destination</label>
+        <select id="movDestination" onchange="renderMovement()"></select>
+      </div>
+      <div class="field">
+        <label>Cabin</label>
+        <select id="movCabin" onchange="renderMovement()">
+          <option value="">Any</option>
+          <option>Economy</option>
+          <option>Premium economy</option>
+          <option>Business</option>
+          <option>First</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Travel date (optional)</label>
+        <input type="date" id="movTravelDate" onchange="renderMovement()">
+      </div>
+      <div class="field">
+        <label>Channel type (optional)</label>
+        <select id="movChannelType" onchange="renderMovement()"></select>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Price curve</div>
+        <div class="panel-sub">One line per airline. Dots are individual checks.</div>
+      </div>
+    </div>
+    <div class="chart-container" id="chartContainer">
+      <div class="empty">Select a route to plot the price curve.</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Underlying data</div>
+        <div class="panel-sub">Chronological records used to plot the chart.</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Check date</th>
+            <th>Airline</th>
+            <th>Channel</th>
+            <th>Cabin</th>
+            <th>Travel date</th>
+            <th>Total (USD)</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="movementTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+</section>
+
+
+<!-- ===============================================
+     VIEW: INSIGHTS
+=============================================== -->
+<section class="view" id="view-insights">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Auto-generated insights</div>
+      <div class="page-desc">Signals derived from your filtered fare data. Refresh by adjusting filters on the Overview page.</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="insight-list" id="insightList">
+      <div class="empty">No insights yet. Add fare records first.</div>
+    </div>
+  </section>
+</section>
+
+
+<!-- ===============================================
+     VIEW: SETTINGS
+=============================================== -->
+<section class="view" id="view-settings">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Settings &amp; FX rates</div>
+      <div class="page-desc">Manage default FX rates (used to auto-populate FX field on new records) and data storage.</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Default FX rates (1 USD = ?)</div>
+        <div class="panel-sub">Applied when adding a new fare record. Override per record if needed. Update these periodically to keep USD conversion accurate.</div>
+      </div>
+      <div>
+        <button class="btn btn-light btn-small" onclick="resetFxDefaults()">Reset defaults</button>
+        <button class="btn btn-navy btn-small" onclick="saveFxRates()">Save FX rates</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="fx-table">
+        <thead>
+          <tr>
+            <th>Currency</th>
+            <th>Description</th>
+            <th>1 USD = ?</th>
+            <th>Region</th>
+          </tr>
+        </thead>
+        <tbody id="fxTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Data management</div>
+        <div class="panel-sub">Backup, restore or clear all local data.</div>
+      </div>
+    </div>
+    <div class="form-actions" style="border-top:none;padding-top:0;margin-top:0;">
+      <button class="btn btn-navy" onclick="exportCSV()">Export CSV</button>
+      <button class="btn btn-light" onclick="exportJSON()">Export JSON backup</button>
+      <button class="btn btn-light" onclick="document.getElementById('importJSONFile').click()">Import JSON backup</button>
+      <input type="file" id="importJSONFile" accept=".json" style="display:none" onchange="importJSON(event)">
+      <button class="btn btn-danger" onclick="clearAllRecords()">Delete all records</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="panel-title">Storage info</div>
+        <div class="panel-sub">Local browser storage usage.</div>
+      </div>
+    </div>
+    <div id="storageInfo" style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);">
+      —
+    </div>
+  </section>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL (duplicate warning)
+========================================================= -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Duplicate detected</div>
+    <div class="modal-body" id="modalBody">—</div>
+    <div class="modal-actions" id="modalActions">
+      <button class="btn btn-light" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-warning" id="modalConfirmBtn">Save anyway</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* =========================================================
+   CONSTANTS · MASTER DATA
+========================================================= */
+
+const STORAGE_KEY = 'SPA_FARE_MONITOR_V4';
+const STORAGE_KEY_FX = 'SPA_FARE_MONITOR_V4_FX';
+const STORAGE_KEY_OLD_V2 = 'SPA_COMPETITOR_FARE_MONITOR_V2';
+
+const AIRLINES = {
+  'Vietnam': [
+    { code: '9G', name: 'Sun PhuQuoc Airways' },
+    { code: 'VN', name: 'Vietnam Airlines' },
+    { code: 'VJ', name: 'Vietjet Air' },
+    { code: 'QH', name: 'Bamboo Airways' },
+    { code: 'VU', name: 'Vietravel Airlines' }
+  ],
+  'Russia / CIS': [
+    { code: 'SU', name: 'Aeroflot' },
+    { code: 'S7', name: 'S7 Airlines' },
+    { code: 'U6', name: 'Ural Airlines' },
+    { code: 'N4', name: 'Nordwind Airlines' },
+    { code: 'DP', name: 'Pobeda' },
+    { code: 'UT', name: 'UTair' },
+    { code: 'HY', name: 'Uzbekistan Airways' },
+    { code: 'KC', name: 'Air Astana' },
+    { code: 'QR-KZ', name: 'QAZAQ AIR' },
+    { code: 'R2', name: 'SCAT Airlines' }
+  ],
+  'Middle East / Africa': [
+    { code: 'EK', name: 'Emirates' },
+    { code: 'QR', name: 'Qatar Airways' },
+    { code: 'EY', name: 'Etihad Airways' },
+    { code: 'TK', name: 'Turkish Airlines' },
+    { code: 'SV', name: 'Saudia' },
+    { code: 'MS', name: 'EgyptAir' },
+    { code: 'GF', name: 'Gulf Air' },
+    { code: 'WY', name: 'Oman Air' },
+    { code: 'KU', name: 'Kuwait Airways' },
+    { code: 'FZ', name: 'flydubai' },
+    { code: 'G9', name: 'Air Arabia' }
+  ],
+  'Europe': [
+    { code: 'LH', name: 'Lufthansa' },
+    { code: 'AF', name: 'Air France' },
+    { code: 'KL', name: 'KLM' },
+    { code: 'BA', name: 'British Airways' },
+    { code: 'IB', name: 'Iberia' },
+    { code: 'AZ', name: 'ITA Airways' },
+    { code: 'LX', name: 'SWISS' },
+    { code: 'OS', name: 'Austrian Airlines' },
+    { code: 'LO', name: 'LOT Polish' },
+    { code: 'SK', name: 'SAS' },
+    { code: 'AY', name: 'Finnair' },
+    { code: 'FR', name: 'Ryanair' },
+    { code: 'U2', name: 'easyJet' },
+    { code: 'W6', name: 'Wizz Air' }
+  ],
+  'Americas': [
+    { code: 'AA', name: 'American Airlines' },
+    { code: 'DL', name: 'Delta Air Lines' },
+    { code: 'UA', name: 'United Airlines' },
+    { code: 'AC', name: 'Air Canada' },
+    { code: 'WS', name: 'WestJet' },
+    { code: 'B6', name: 'JetBlue' },
+    { code: 'F9', name: 'Frontier' },
+    { code: 'NK', name: 'Spirit' },
+    { code: 'AS', name: 'Alaska Airlines' }
+  ],
+  'Asia hubs': [
+    { code: 'SQ', name: 'Singapore Airlines' },
+    { code: 'CX', name: 'Cathay Pacific' },
+    { code: 'KE', name: 'Korean Air' },
+    { code: 'OZ', name: 'Asiana' },
+    { code: 'TG', name: 'Thai Airways' },
+    { code: 'MH', name: 'Malaysia Airlines' },
+    { code: 'PR', name: 'Philippine Airlines' },
+    { code: 'JL', name: 'Japan Airlines' },
+    { code: 'NH', name: 'ANA' },
+    { code: 'CA', name: 'Air China' },
+    { code: 'MU', name: 'China Eastern' },
+    { code: 'CZ', name: 'China Southern' },
+    { code: 'HU', name: 'Hainan Airlines' },
+    { code: 'AI', name: 'Air India' },
+    { code: '6E', name: 'IndiGo' }
+  ],
+  'Other': [
+    { code: 'OTHER', name: 'Other airline' }
+  ]
+};
+
+const AIRPORTS = {
+  'Vietnam': ['HAN','SGN','DAD','PQC','CXR','VCA','HPH','HUI','THD','VII','DIN','DLI','TBB','PXU','VCS','VDH','UIH','BMV','VCL','VKG'],
+  'Russia / CIS': ['SVO','DME','VKO','LED','KZN','AER','OVB','SVX','VVO','KJA','KRR','ROV','TAS','SKD','ALA','NQZ','FRU'],
+  'Middle East': ['DXB','DWC','AUH','SHJ','DOH','RUH','JED','DMM','KWI','BAH','MCT','IST','SAW','CAI'],
+  'Europe': ['FRA','MUC','LHR','LGW','CDG','ORY','AMS','MAD','BCN','FCO','MXP','ZRH','VIE','WAW','PRG','HEL','ARN','CPH','OSL','BRU','DUB','LIS','ATH'],
+  'Americas': ['JFK','LAX','SFO','ORD','IAD','ATL','MIA','SEA','DFW','BOS','EWR','LAS','PHX','HNL','YYZ','YVR','YUL','YOW','YYC'],
+  'Asia hubs': ['SIN','HKG','ICN','GMP','TPE','BKK','DMK','KUL','MNL','CEB','NRT','HND','KIX','NGO','PVG','PEK','CAN','SZX','HGH','DEL','BOM','MAA','BLR']
+};
+
+const POS_COUNTRIES = [
+  { code: 'VN', name: 'Vietnam' },
+  { code: 'RU', name: 'Russia' },
+  { code: 'KZ', name: 'Kazakhstan' },
+  { code: 'UZ', name: 'Uzbekistan' },
+  { code: 'KG', name: 'Kyrgyzstan' },
+  { code: 'AE', name: 'UAE' },
+  { code: 'SA', name: 'Saudi Arabia' },
+  { code: 'QA', name: 'Qatar' },
+  { code: 'KW', name: 'Kuwait' },
+  { code: 'BH', name: 'Bahrain' },
+  { code: 'OM', name: 'Oman' },
+  { code: 'EG', name: 'Egypt' },
+  { code: 'TR', name: 'Türkiye' },
+  { code: 'DE', name: 'Germany' },
+  { code: 'FR', name: 'France' },
+  { code: 'UK', name: 'United Kingdom' },
+  { code: 'ES', name: 'Spain' },
+  { code: 'IT', name: 'Italy' },
+  { code: 'NL', name: 'Netherlands' },
+  { code: 'PL', name: 'Poland' },
+  { code: 'AT', name: 'Austria' },
+  { code: 'CH', name: 'Switzerland' },
+  { code: 'CZ', name: 'Czechia' },
+  { code: 'SE', name: 'Sweden' },
+  { code: 'FI', name: 'Finland' },
+  { code: 'US', name: 'United States' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'AU', name: 'Australia' },
+  { code: 'SG', name: 'Singapore' },
+  { code: 'HK', name: 'Hong Kong' },
+  { code: 'KR', name: 'South Korea' },
+  { code: 'JP', name: 'Japan' },
+  { code: 'CN', name: 'China' },
+  { code: 'TH', name: 'Thailand' },
+  { code: 'MY', name: 'Malaysia' },
+  { code: 'PH', name: 'Philippines' },
+  { code: 'ID', name: 'Indonesia' },
+  { code: 'IN', name: 'India' },
+  { code: 'TW', name: 'Taiwan' }
+];
+
+const DEFAULT_FX = [
+  { code: 'USD', name: 'US Dollar',           rate: 1,      region: 'Base'   },
+  { code: 'VND', name: 'Vietnamese Dong',     rate: 24500,  region: 'Vietnam'},
+  { code: 'EUR', name: 'Euro',                rate: 0.92,   region: 'Europe' },
+  { code: 'GBP', name: 'Pound Sterling',      rate: 0.79,   region: 'UK'     },
+  { code: 'RUB', name: 'Russian Ruble',       rate: 92,     region: 'Russia' },
+  { code: 'KZT', name: 'Kazakhstani Tenge',   rate: 450,    region: 'CIS'    },
+  { code: 'UZS', name: 'Uzbekistani Som',     rate: 12600,  region: 'CIS'    },
+  { code: 'AED', name: 'UAE Dirham',          rate: 3.67,   region: 'ME'     },
+  { code: 'SAR', name: 'Saudi Riyal',         rate: 3.75,   region: 'ME'     },
+  { code: 'QAR', name: 'Qatari Riyal',        rate: 3.64,   region: 'ME'     },
+  { code: 'KWD', name: 'Kuwaiti Dinar',       rate: 0.31,   region: 'ME'     },
+  { code: 'BHD', name: 'Bahraini Dinar',      rate: 0.38,   region: 'ME'     },
+  { code: 'OMR', name: 'Omani Rial',          rate: 0.38,   region: 'ME'     },
+  { code: 'TRY', name: 'Turkish Lira',        rate: 34,     region: 'ME'     },
+  { code: 'CAD', name: 'Canadian Dollar',     rate: 1.37,   region: 'Americas'},
+  { code: 'AUD', name: 'Australian Dollar',   rate: 1.52,   region: 'Oceania'},
+  { code: 'SGD', name: 'Singapore Dollar',    rate: 1.34,   region: 'Asia'   },
+  { code: 'HKD', name: 'Hong Kong Dollar',    rate: 7.8,    region: 'Asia'   },
+  { code: 'KRW', name: 'Korean Won',          rate: 1350,   region: 'Asia'   },
+  { code: 'JPY', name: 'Japanese Yen',        rate: 150,    region: 'Asia'   },
+  { code: 'CNY', name: 'Chinese Yuan',        rate: 7.2,    region: 'Asia'   },
+  { code: 'THB', name: 'Thai Baht',           rate: 35,     region: 'Asia'   },
+  { code: 'MYR', name: 'Malaysian Ringgit',   rate: 4.7,    region: 'Asia'   },
+  { code: 'PHP', name: 'Philippine Peso',     rate: 57,     region: 'Asia'   },
+  { code: 'IDR', name: 'Indonesian Rupiah',   rate: 15800,  region: 'Asia'   },
+  { code: 'INR', name: 'Indian Rupee',        rate: 84,     region: 'Asia'   }
+];
+
+const CHANNEL_TYPES = ['Airline web','Airline app','OTA','BSP / GDS','Meta search','Agent / B2B','Corporate / TMC','Other'];
+
+const CHANNELS = {
+  'Airline web': [
+    '9G website','VN website','VJ website','QH website','VU website',
+    'SU website','S7 website','U6 website',
+    'EK website','QR website','EY website','TK website','SV website','FZ website',
+    'LH website','AF website','KL website','BA website','LX website','AY website',
+    'AA website','DL website','UA website','AC website',
+    'SQ website','CX website','KE website','TG website','MH website','CA website','MU website',
+    'Other airline website'
+  ],
+  'Airline app': [
+    '9G app','VN app','VJ app','QH app',
+    'EK app','QR app','TK app','SU app','S7 app',
+    'LH app','AF app','BA app',
+    'AA app','DL app','UA app',
+    'Other airline app'
+  ],
+  'OTA': [
+    'Trip.com','Agoda','Booking.com','Expedia','Klook','Kiwi.com',
+    'eDreams','Opodo','Priceline','Orbitz','Hopper',
+    'Traveloka','Mytour','Abay','Bestprice','iVIVU','Vexere',
+    'Aviasales','Ostrovok','OneTwoTrip','Tutu.ru','Anywayanyday','Bilet.ru',
+    'Wego','Cleartrip','Almosafer','Rehlat','Musafir',
+    'Other OTA'
+  ],
+  'BSP / GDS': [
+    'Amadeus / 1A','Sabre / 1S','Travelport / 1G','Sabre Red','Amadeus selling platform','BSP link','Other GDS'
+  ],
+  'Meta search': [
+    'Google Flights','Skyscanner','Kayak','Momondo','Hopper (meta)','Wego (meta)','Other meta'
+  ],
+  'Agent / B2B': [
+    'Travel agent','GSA','Consolidator','Wholesaler','B2B portal','Other B2B'
+  ],
+  'Corporate / TMC': [
+    'AMEX GBT','BCD Travel','CWT','FCM','Egencia','Corporate portal','Other TMC'
+  ],
+  'Other': ['Other']
+};
+
+const DTD_GROUPS = ['D0','D-1–2','D-3–6','D-7–13','D-14–20','D-21–29','D-30–59','D-60–89','D-90–179','D-180–364','D-365+'];
+
+const AIRLINE_COLORS = [
+  '#c9a961','#0a2540','#dc2626','#2563eb','#059669','#7c3aed',
+  '#ea580c','#db2777','#0891b2','#65a30d','#a16207','#4338ca'
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+let fareRecords = [];
+let filteredRecords = [];
+let editingId = null;
+let fxRates = [];
+let pendingSaveRecord = null;
+let currentView = 'overview';
+
+/* =========================================================
+   INIT
+========================================================= */
+document.addEventListener('DOMContentLoaded', function(){
+  loadFxRates();
+  loadData();
+  populateStaticDropdowns();
+  setDefaultDateTime();
+  updateChannelNames();
+  updateFxRateFromDefault();
+  calculateDTD();
+  populateFilterDTDOptions();
+  renderAll();
+  handleHashRoute();
+  window.addEventListener('hashchange', handleHashRoute);
+});
+
+function handleHashRoute(){
+  const h = (location.hash || '').replace('#','');
+  if(h && document.getElementById('view-'+h)){
+    switchView(h, false);
+  }
+}
+
+/* =========================================================
+   STORAGE
+========================================================= */
+function loadData(){
+  try{
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if(stored){
+      fareRecords = JSON.parse(stored) || [];
+    } else {
+      // Attempt migration from v2
+      const oldV2 = localStorage.getItem(STORAGE_KEY_OLD_V2);
+      if(oldV2){
+        const oldRecords = JSON.parse(oldV2) || [];
+        fareRecords = oldRecords.map(migrateV2Record);
+        saveData();
+      } else {
+        fareRecords = [];
+      }
+    }
+  }catch(err){
+    console.warn('Load error', err);
+    fareRecords = [];
+  }
+}
+
+function migrateV2Record(r){
+  const fxDefault = getDefaultFxRate(r.currency || 'VND');
+  const totalUSD = fxDefault ? Number(r.totalFare || 0) / fxDefault : 0;
+  return {
+    ...r,
+    fxRate: fxDefault,
+    totalUSD: totalUSD,
+    ancillary: 0,
+    allInFare: Number(r.totalFare || 0),
+    allInUSD: totalUSD,
+    paxType: 'Adult',
+    checkedBaggage: r.baggage || '',
+    cabinBaggage: '',
+    fareRules: '',
+    screenshotUrl: '',
+    checker: '',
+    transit1: '', layover1: '', segment2: '', transit2: '', totalJourney: '',
+    // Normalize case for legacy uppercase values
+    season: normalizeCase(r.season),
+    dayType: normalizeCase(r.dayType),
+    tripType: normalizeCase(r.tripType),
+    cabin: normalizeCase(r.cabin),
+    flightType: normalizeCase(r.flightType),
+    availability: normalizeCase(r.availability),
+    channelType: normalizeCase(r.channelType),
+    channelName: r.channelName,
+    fareSourceType: normalizeCase(r.fareSourceType),
+    meal: normalizeCase(r.meal),
+    refundable: normalizeCase(r.refundable),
+    changeable: normalizeCase(r.changeable)
+  };
+}
+
+function normalizeCase(s){
+  if(!s) return s;
+  const map = {
+    'LOW SEASON':'Low season','SHOULDER SEASON':'Shoulder','PEAK SEASON':'Peak season',
+    'SUMMER':'Summer','TET':'Tet','NATIONAL HOLIDAY':'National holiday',
+    'CHRISTMAS / NEW YEAR':'Christmas / New year','WEEKEND':'Weekend',
+    'SPECIAL EVENT':'Special event','OTHER':'Other',
+    'WEEKDAY':'Weekday','HOLIDAY':'Holiday','SPECIAL PERIOD':'Special period',
+    'ONE WAY':'One way','ROUND TRIP':'Round trip',
+    'ECONOMY':'Economy','PREMIUM ECONOMY':'Premium economy','BUSINESS':'Business','FIRST':'First',
+    'NON-STOP':'Non-stop','DIRECT':'Direct (1 stop)','CONNECTING':'Connecting',
+    'AVAILABLE':'Available','LOW AVAILABILITY':'Low availability','SOLD OUT':'Sold out','UNKNOWN':'Unknown',
+    'AIRLINE WEB':'Airline web','AIRLINE APP':'Airline app','OTA':'OTA',
+    'BSP / GDS':'BSP / GDS','META SEARCH':'Meta search','AGENT / B2B':'Agent / B2B','OTHER':'Other',
+    'PUBLISHED FARE':'Published fare','PROMOTIONAL FARE':'Promotional fare','PRIVATE FARE':'Private fare',
+    'NEGOTIATED FARE':'Negotiated fare','MEMBER FARE':'Member fare',
+    'INCLUDED':'Included','NOT INCLUDED':'Not included','YES':'Yes','NO':'No','WITH FEE':'With fee'
+  };
+  return map[s] || s;
+}
+
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(fareRecords));
+  }catch(err){
+    alert('Could not save: browser storage may be full. Please export CSV/JSON as backup.');
+  }
+}
+
+function loadFxRates(){
+  try{
+    const stored = localStorage.getItem(STORAGE_KEY_FX);
+    fxRates = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_FX));
+  }catch(err){
+    fxRates = JSON.parse(JSON.stringify(DEFAULT_FX));
+  }
+}
+
+function saveFxRatesToStorage(){
+  try{ localStorage.setItem(STORAGE_KEY_FX, JSON.stringify(fxRates)); }catch(e){}
+}
+
+function getDefaultFxRate(currencyCode){
+  const found = fxRates.find(f => f.code === currencyCode);
+  return found ? Number(found.rate) : 1;
+}
+
+/* =========================================================
+   VIEW SWITCHING
+========================================================= */
+function switchView(view, updateHash=true){
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById('view-' + view);
+  if(target){ target.classList.add('active'); }
+
+  document.querySelectorAll('.menu-item[data-view]').forEach(m => {
+    m.classList.toggle('active', m.getAttribute('data-view') === view);
+  });
+
+  if(updateHash){ location.hash = view; }
+  window.scrollTo(0,0);
+
+  // Refresh dynamic views
+  if(view === 'movement'){ populateMovementDropdowns(); renderMovement(); }
+  if(view === 'route'){ renderRouteAnalysis(); }
+  if(view === 'booking'){ renderFullDTD(); }
+  if(view === 'channel'){ renderFullChannel(); }
+  if(view === 'season'){ renderFullSeason(); }
+  if(view === 'insights'){ renderInsights(); }
+  if(view === 'settings'){ renderFxTable(); renderStorageInfo(); }
+}
+
+function openInput(){
+  switchView('input');
+}
+
+/* =========================================================
+   POPULATE STATIC DROPDOWNS
+========================================================= */
+function populateStaticDropdowns(){
+  // Airline
+  populateSelectWithOptgroups('airline', AIRLINES, opt => opt.code, opt => `${opt.code} · ${opt.name}`);
+  // Origin / Destination
+  populateAirportSelect('origin');
+  populateAirportSelect('destination');
+  populateAirportSelect('transit1');
+  populateAirportSelect('transit2');
+  // POS
+  populatePosSelect('pointOfSale');
+  // Channel type
+  const ctSelect = document.getElementById('channelType');
+  ctSelect.innerHTML = '';
+  CHANNEL_TYPES.forEach(t => {
+    const o = document.createElement('option'); o.value = t; o.textContent = t;
+    ctSelect.appendChild(o);
+  });
+  // Currency
+  const curSelect = document.getElementById('currency');
+  curSelect.innerHTML = '';
+  fxRates.forEach(f => {
+    const o = document.createElement('option'); o.value = f.code; o.textContent = `${f.code} · ${f.name}`;
+    curSelect.appendChild(o);
+  });
+  curSelect.value = 'VND';
+}
+
+function populateSelectWithOptgroups(id, groups, valueFn, labelFn, includeEmpty=false){
+  const sel = document.getElementById(id);
+  sel.innerHTML = '';
+  if(includeEmpty){
+    const empty = document.createElement('option');
+    empty.value = ''; empty.textContent = '—';
+    sel.appendChild(empty);
+  }
+  Object.entries(groups).forEach(([groupName, items]) => {
+    const og = document.createElement('optgroup');
+    og.label = groupName;
+    items.forEach(item => {
+      const o = document.createElement('option');
+      o.value = valueFn(item); o.textContent = labelFn(item);
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
+
+function populateAirportSelect(id){
+  const sel = document.getElementById(id);
+  sel.innerHTML = '';
+  // Include an empty option for transit airports
+  if(id === 'transit1' || id === 'transit2'){
+    const empty = document.createElement('option');
+    empty.value = ''; empty.textContent = '—';
+    sel.appendChild(empty);
+  } else {
+    const placeholder = document.createElement('option');
+    placeholder.value = ''; placeholder.textContent = 'Select airport…';
+    sel.appendChild(placeholder);
+  }
+  Object.entries(AIRPORTS).forEach(([region, codes]) => {
+    const og = document.createElement('optgroup');
+    og.label = region;
+    codes.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
+
+function populatePosSelect(id){
+  const sel = document.getElementById(id);
+  sel.innerHTML = '';
+  const placeholder = document.createElement('option');
+  placeholder.value = ''; placeholder.textContent = 'Select POS…';
+  sel.appendChild(placeholder);
+  POS_COUNTRIES.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.code; o.textContent = `${p.code} · ${p.name}`;
+    sel.appendChild(o);
+  });
+}
+
+function populateFilterDTDOptions(){
+  const sel = document.getElementById('filterDTD');
+  sel.innerHTML = '<option value="">All booking windows</option>';
+  DTD_GROUPS.forEach(g => {
+    const o = document.createElement('option'); o.value = g; o.textContent = g;
+    sel.appendChild(o);
+  });
+}
+
+/* =========================================================
+   DEFAULT DATE/TIME
+========================================================= */
+function setDefaultDateTime(){
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const dd = String(now.getDate()).padStart(2,'0');
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mi = String(now.getMinutes()).padStart(2,'0');
+  const cd = document.getElementById('checkDate');
+  const ct = document.getElementById('checkTime');
+  if(cd && !cd.value) cd.value = `${yyyy}-${mm}-${dd}`;
+  if(ct && !ct.value) ct.value = `${hh}:${mi}`;
+  updateLastUpdated();
+}
+
+function updateLastUpdated(){
+  document.getElementById('lastUpdated').innerText = new Date().toLocaleString('en-GB');
+}
+
+/* =========================================================
+   CHANNEL DEPENDENCY
+========================================================= */
+function updateChannelNames(selectedValue=''){
+  const type = document.getElementById('channelType').value;
+  const select = document.getElementById('channelName');
+  select.innerHTML = '';
+  const names = CHANNELS[type] || ['Other'];
+  names.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name; opt.textContent = name;
+    select.appendChild(opt);
+  });
+  if(selectedValue){
+    const exists = [...select.options].some(o => o.value === selectedValue);
+    if(!exists){
+      const o = document.createElement('option');
+      o.value = selectedValue; o.textContent = selectedValue;
+      select.appendChild(o);
+    }
+    select.value = selectedValue;
+  }
+}
+
+/* =========================================================
+   CONNECTION FIELDS
+========================================================= */
+function toggleConnectionFields(){
+  const ft = document.getElementById('flightType').value;
+  const box = document.getElementById('connectionBox');
+  box.style.display = (ft === 'Non-stop') ? 'none' : 'block';
+}
+
+/* =========================================================
+   DTD CALCULATION
+========================================================= */
+function calculateDTD(){
+  const checkDate = document.getElementById('checkDate').value;
+  const travelDate = document.getElementById('travelDate').value;
+  if(!checkDate || !travelDate){
+    document.getElementById('dtd').value = '';
+    document.getElementById('dtdGroup').value = '';
+    return;
+  }
+  const c = new Date(checkDate+'T00:00:00');
+  const t = new Date(travelDate+'T00:00:00');
+  const diff = Math.round((t - c) / (1000*60*60*24));
+  document.getElementById('dtd').value = diff >= 0 ? 'D-'+diff : 'D+'+Math.abs(diff);
+  document.getElementById('dtdGroup').value = getDTDGroup(diff);
+}
+
+function getDTDGroup(days){
+  if(days < 0) return 'Past';
+  if(days === 0) return 'D0';
+  if(days <= 2) return 'D-1–2';
+  if(days <= 6) return 'D-3–6';
+  if(days <= 13) return 'D-7–13';
+  if(days <= 20) return 'D-14–20';
+  if(days <= 29) return 'D-21–29';
+  if(days <= 59) return 'D-30–59';
+  if(days <= 89) return 'D-60–89';
+  if(days <= 179) return 'D-90–179';
+  if(days <= 364) return 'D-180–364';
+  return 'D-365+';
+}
+
+/* =========================================================
+   TOTAL / USD / ALL-IN CALCULATIONS
+========================================================= */
+function calculateTotal(){
+  const base = Number(document.getElementById('baseFare').value) || 0;
+  const tax  = Number(document.getElementById('tax').value)  || 0;
+  const fee  = Number(document.getElementById('otherFee').value) || 0;
+  if(base || tax || fee){
+    document.getElementById('totalFare').value = base + tax + fee;
+  }
+  calculateUSD();
+  calculateAllIn();
+}
+
+function updateFxRateFromDefault(){
+  const cur = document.getElementById('currency').value;
+  const defaultRate = getDefaultFxRate(cur);
+  document.getElementById('fxRate').value = defaultRate;
+  document.getElementById('fxHint').innerText = `Default: 1 USD = ${defaultRate.toLocaleString('en-US')} ${cur}`;
+  calculateUSD();
+}
+
+function calculateUSD(){
+  const total = Number(document.getElementById('totalFare').value) || 0;
+  const fx = Number(document.getElementById('fxRate').value) || 1;
+  const usd = fx > 0 ? total / fx : 0;
+  document.getElementById('totalUSD').value = usd ? formatMoney(usd, 2) + ' USD' : '';
+  calculateAllIn();
+}
+
+function calculateAllIn(){
+  const total = Number(document.getElementById('totalFare').value) || 0;
+  const anc = Number(document.getElementById('ancillary').value) || 0;
+  const fx = Number(document.getElementById('fxRate').value) || 1;
+  const allIn = total + anc;
+  const allInUSD = fx > 0 ? allIn / fx : 0;
+  document.getElementById('allInFare').value = allIn ? `${formatMoney(allIn,0)} (${formatMoney(allInUSD,2)} USD)` : '';
+}
+
+/* =========================================================
+   SAVE RECORD (with validation + duplicate detection)
+========================================================= */
+function saveRecord(callback){
+  calculateDTD();
+  calculateUSD();
+  calculateAllIn();
+
+  const values = collectFormValues();
+
+  const errors = validateRecord(values);
+  if(errors.length){
+    alert('Please fix the following:\n\n' + errors.map(e => '• '+e).join('\n'));
+    return;
+  }
+
+  // Duplicate detection (only for new records, not edits)
+  if(!editingId){
+    const dup = findDuplicate(values);
+    if(dup){
+      pendingSaveRecord = values;
+      showModal(
+        'Possible duplicate detected',
+        `A very similar record already exists:<br><br>
+         <b>${dup.airline}</b> · ${dup.origin} → ${dup.destination} · ${dup.cabin}<br>
+         Check date <b>${dup.checkDate}</b> · Travel <b>${dup.travelDate}</b><br>
+         Channel: ${dup.channelName} · Total: ${formatMoney(dup.totalFare)} ${dup.currency}<br><br>
+         Do you want to save this as a new record anyway?`,
+        'Save anyway',
+        () => { commitSave(pendingSaveRecord, callback); pendingSaveRecord = null; }
+      );
+      return;
+    }
+  }
+
+  commitSave(values, callback);
+}
+
+function commitSave(values, callback){
+  const record = { id: editingId || Date.now().toString(), ...values, updatedAt: new Date().toISOString() };
+
+  if(editingId){
+    const idx = fareRecords.findIndex(r => r.id === editingId);
+    if(idx !== -1) fareRecords[idx] = record;
+  } else {
+    fareRecords.unshift(record);
+  }
+
+  saveData();
+  clearForm();
+  renderAll();
+  updateLastUpdated();
+  if(typeof callback === 'function') callback(record);
+}
+
+function collectFormValues(){
+  const g = id => document.getElementById(id).value;
+  const trim = v => (v || '').trim();
+  return {
+    checkDate: g('checkDate'),
+    checkTime: g('checkTime'),
+    travelDate: g('travelDate'),
+    dtd: g('dtd'),
+    dtdGroup: g('dtdGroup'),
+    snapshot: trim(g('snapshot')).toUpperCase(),
+    season: g('season'),
+    dayType: g('dayType'),
+    tripType: g('tripType'),
+    checker: trim(g('checker')),
+
+    origin: g('origin'),
+    destination: g('destination'),
+    airline: g('airline'),
+    flightNumber: trim(g('flightNumber')).toUpperCase(),
+    cabin: g('cabin'),
+    departureTime: g('departureTime'),
+    arrivalTime: g('arrivalTime'),
+    flightType: g('flightType'),
+    aircraft: trim(g('aircraft')).toUpperCase(),
+    availability: g('availability'),
+
+    transit1: g('transit1'),
+    layover1: g('layover1'),
+    segment2: trim(g('segment2')).toUpperCase(),
+    transit2: g('transit2'),
+    totalJourney: g('totalJourney'),
+
+    channelType: g('channelType'),
+    channelName: g('channelName'),
+    fareSourceType: g('fareSourceType'),
+    pointOfSale: g('pointOfSale'),
+    paxType: g('paxType'),
+    sourceReference: trim(g('sourceReference')),
+    screenshotUrl: trim(g('screenshotUrl')),
+
+    currency: g('currency'),
+    fxRate: Number(g('fxRate')) || 1,
+    baseFare: Number(g('baseFare')) || 0,
+    tax: Number(g('tax')) || 0,
+    otherFee: Number(g('otherFee')) || 0,
+    totalFare: Number(g('totalFare')) || 0,
+    totalUSD: computeUSD(Number(g('totalFare')) || 0, Number(g('fxRate')) || 1),
+    ancillary: Number(g('ancillary')) || 0,
+    allInFare: (Number(g('totalFare')) || 0) + (Number(g('ancillary')) || 0),
+    allInUSD: computeUSD((Number(g('totalFare')) || 0) + (Number(g('ancillary')) || 0), Number(g('fxRate')) || 1),
+
+    fareFamily: trim(g('fareFamily')),
+    bookingClass: trim(g('bookingClass')).toUpperCase(),
+    checkedBaggage: trim(g('checkedBaggage')).toUpperCase(),
+    cabinBaggage: trim(g('cabinBaggage')).toUpperCase(),
+    meal: g('meal'),
+    refundable: g('refundable'),
+    changeable: g('changeable'),
+    fareRules: trim(g('fareRules')),
+    notes: trim(g('notes'))
+  };
+}
+
+function computeUSD(amount, fx){
+  return fx > 0 ? amount / fx : 0;
+}
+
+function validateRecord(v){
+  const errs = [];
+  if(!v.checkDate) errs.push('Check date is required.');
+  if(!v.travelDate) errs.push('Travel date is required.');
+  if(v.checkDate && v.travelDate && v.travelDate < v.checkDate){
+    errs.push('Travel date cannot be before check date.');
+  }
+  if(!v.origin) errs.push('Origin is required.');
+  if(!v.destination) errs.push('Destination is required.');
+  if(v.origin && v.destination && v.origin === v.destination){
+    errs.push('Origin and destination must be different.');
+  }
+  if(!v.airline) errs.push('Airline is required.');
+  if(!v.channelType) errs.push('Channel type is required.');
+  if(!v.channelName) errs.push('Channel name is required.');
+  if(!v.pointOfSale) errs.push('Point of sale is required.');
+  if(!v.currency) errs.push('Currency is required.');
+  if(!v.totalFare || v.totalFare <= 0) errs.push('Total fare must be greater than 0.');
+  if(v.fxRate <= 0) errs.push('FX rate must be greater than 0.');
+  return errs;
+}
+
+function findDuplicate(v){
+  return fareRecords.find(r =>
+    r.checkDate === v.checkDate &&
+    r.travelDate === v.travelDate &&
+    r.airline === v.airline &&
+    r.channelName === v.channelName &&
+    r.flightNumber === v.flightNumber &&
+    r.cabin === v.cabin &&
+    r.paxType === v.paxType &&
+    r.currency === v.currency
+  );
+}
+
+/* =========================================================
+   SAVE & NEXT CHANNEL (keeps route/date, clears channel + fare)
+========================================================= */
+function saveAndNext(){
+  saveRecord(record => {
+    // Restore all check + route info from just-saved record so user can enter next channel
+    document.getElementById('checkDate').value = record.checkDate;
+    document.getElementById('checkTime').value = record.checkTime;
+    document.getElementById('travelDate').value = record.travelDate;
+    document.getElementById('snapshot').value = record.snapshot;
+    document.getElementById('season').value = record.season;
+    document.getElementById('dayType').value = record.dayType;
+    document.getElementById('tripType').value = record.tripType;
+    document.getElementById('checker').value = record.checker;
+    document.getElementById('origin').value = record.origin;
+    document.getElementById('destination').value = record.destination;
+    document.getElementById('cabin').value = record.cabin;
+    document.getElementById('pointOfSale').value = record.pointOfSale;
+    document.getElementById('paxType').value = record.paxType;
+    document.getElementById('currency').value = record.currency;
+    document.getElementById('fxRate').value = record.fxRate;
+    calculateDTD();
+    updateFxRateFromDefault();
+    // Focus airline dropdown so user picks the next airline/channel
+    document.getElementById('airline').focus();
+  });
+}
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+function clearForm(){
+  editingId = null;
+  const textIds = ['travelDate','snapshot','flightNumber','departureTime','arrivalTime','aircraft',
+    'transit1','layover1','segment2','transit2','totalJourney','sourceReference','screenshotUrl',
+    'baseFare','tax','otherFee','totalFare','ancillary','fareFamily','bookingClass',
+    'checkedBaggage','cabinBaggage','fareRules','notes','checker','totalUSD','allInFare','dtd','dtdGroup'];
+  textIds.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+
+  document.getElementById('season').value = 'Low season';
+  document.getElementById('dayType').value = 'Weekday';
+  document.getElementById('tripType').value = 'One way';
+  document.getElementById('cabin').value = 'Economy';
+  document.getElementById('flightType').value = 'Non-stop';
+  document.getElementById('availability').value = 'Available';
+  document.getElementById('channelType').value = 'Airline web';
+  document.getElementById('fareSourceType').value = 'Published fare';
+  document.getElementById('paxType').value = 'Adult';
+  document.getElementById('meal').value = 'Unknown';
+  document.getElementById('refundable').value = 'Unknown';
+  document.getElementById('changeable').value = 'Unknown';
+  document.getElementById('origin').value = '';
+  document.getElementById('destination').value = '';
+  document.getElementById('airline').value = '';
+  document.getElementById('pointOfSale').value = '';
+  document.getElementById('currency').value = 'VND';
+
+  updateChannelNames();
+  updateFxRateFromDefault();
+  toggleConnectionFields();
+
+  document.getElementById('editStatus').textContent = 'New record';
+  document.getElementById('editStatus').className = 'tag tag-blue';
+  document.getElementById('saveButton').textContent = 'Save fare record';
+  document.getElementById('cancelEditButton').style.display = 'none';
+  setDefaultDateTime();
+}
+
+/* =========================================================
+   EDIT / CLONE / DELETE
+========================================================= */
+function editRecord(id){
+  const r = fareRecords.find(x => x.id === id);
+  if(!r) return;
+  editingId = id;
+  populateFormFromRecord(r);
+  document.getElementById('editStatus').textContent = 'Editing';
+  document.getElementById('editStatus').className = 'tag tag-orange';
+  document.getElementById('saveButton').textContent = 'Update fare record';
+  document.getElementById('cancelEditButton').style.display = 'inline-flex';
+  switchView('input');
+}
+
+function cloneRecord(id){
+  const r = fareRecords.find(x => x.id === id);
+  if(!r) return;
+  editingId = null;
+  populateFormFromRecord(r);
+  // Reset check-date/time to now so it's a fresh check
+  setDefaultDateTime();
+  calculateDTD();
+  document.getElementById('editStatus').textContent = 'Cloned – modify & save';
+  document.getElementById('editStatus').className = 'tag tag-gold';
+  document.getElementById('saveButton').textContent = 'Save cloned record';
+  document.getElementById('cancelEditButton').style.display = 'none';
+  switchView('input');
+}
+
+function populateFormFromRecord(r){
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.value = val ?? ''; };
+  set('checkDate', r.checkDate);
+  set('checkTime', r.checkTime);
+  set('travelDate', r.travelDate);
+  set('snapshot', r.snapshot);
+  set('season', r.season || 'Low season');
+  set('dayType', r.dayType || 'Weekday');
+  set('tripType', r.tripType || 'One way');
+  set('checker', r.checker);
+  set('origin', r.origin);
+  set('destination', r.destination);
+  set('airline', r.airline);
+  set('flightNumber', r.flightNumber);
+  set('cabin', r.cabin || 'Economy');
+  set('departureTime', r.departureTime);
+  set('arrivalTime', r.arrivalTime);
+  set('flightType', r.flightType || 'Non-stop');
+  set('aircraft', r.aircraft);
+  set('availability', r.availability || 'Available');
+  set('transit1', r.transit1);
+  set('layover1', r.layover1);
+  set('segment2', r.segment2);
+  set('transit2', r.transit2);
+  set('totalJourney', r.totalJourney);
+  set('channelType', r.channelType || 'Airline web');
+  updateChannelNames(r.channelName || '');
+  set('fareSourceType', r.fareSourceType || 'Published fare');
+  set('pointOfSale', r.pointOfSale);
+  set('paxType', r.paxType || 'Adult');
+  set('sourceReference', r.sourceReference);
+  set('screenshotUrl', r.screenshotUrl);
+  set('currency', r.currency || 'VND');
+  set('fxRate', r.fxRate || getDefaultFxRate(r.currency || 'VND'));
+  set('baseFare', r.baseFare);
+  set('tax', r.tax);
+  set('otherFee', r.otherFee);
+  set('totalFare', r.totalFare);
+  set('ancillary', r.ancillary);
+  set('fareFamily', r.fareFamily);
+  set('bookingClass', r.bookingClass);
+  set('checkedBaggage', r.checkedBaggage);
+  set('cabinBaggage', r.cabinBaggage);
+  set('meal', r.meal || 'Unknown');
+  set('refundable', r.refundable || 'Unknown');
+  set('changeable', r.changeable || 'Unknown');
+  set('fareRules', r.fareRules);
+  set('notes', r.notes);
+
+  toggleConnectionFields();
+  calculateDTD();
+  calculateUSD();
+  calculateAllIn();
+
+  const fx = document.getElementById('fxHint');
+  const cur = document.getElementById('currency').value;
+  fx.innerText = `Default: 1 USD = ${getDefaultFxRate(cur).toLocaleString('en-US')} ${cur}`;
+}
+
+function cancelEdit(){ clearForm(); }
+
+function deleteRecord(id){
+  if(!confirm('Delete this fare record?')) return;
+  fareRecords = fareRecords.filter(r => r.id !== id);
+  saveData();
+  renderAll();
+}
+
+function clearAllRecords(){
+  if(!fareRecords.length){ alert('No records to delete.'); return; }
+  if(!confirm(`Delete ALL ${fareRecords.length} fare records? This cannot be undone.`)) return;
+  fareRecords = [];
+  saveData();
+  renderAll();
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+function populateFilterOptions(){
+  setSelectOptions('filterOrigin', uniqueValues('origin'), 'All origins');
+  setSelectOptions('filterDestination', uniqueValues('destination'), 'All destinations');
+  setSelectOptions('filterAirline', uniqueValues('airline'), 'All airlines');
+  setSelectOptions('filterSeason', uniqueValues('season'), 'All seasons');
+  setSelectOptions('filterChannelType', uniqueValues('channelType'), 'All channel types');
+  setSelectOptions('filterChannelName', uniqueValues('channelName'), 'All channels');
+  setSelectOptions('filterPOS', uniqueValues('pointOfSale'), 'All POS');
+}
+
+function uniqueValues(key){
+  return [...new Set(fareRecords.map(r => r[key]).filter(Boolean))].sort();
+}
+
+function setSelectOptions(id, values, firstText){
+  const sel = document.getElementById(id);
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '';
+  const all = document.createElement('option');
+  all.value = ''; all.textContent = firstText;
+  sel.appendChild(all);
+  values.forEach(v => {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = v;
+    sel.appendChild(o);
+  });
+  if([...sel.options].some(o => o.value === current)){ sel.value = current; }
+}
+
+function applyFilters(){
+  const gv = id => document.getElementById(id) ? document.getElementById(id).value : '';
+  const origin = gv('filterOrigin');
+  const destination = gv('filterDestination');
+  const airline = gv('filterAirline');
+  const cabin = gv('filterCabin');
+  const season = gv('filterSeason');
+  const dtd = gv('filterDTD');
+  const channelType = gv('filterChannelType');
+  const channelName = gv('filterChannelName');
+  const pos = gv('filterPOS');
+  const travelFrom = gv('filterTravelFrom');
+  const travelTo = gv('filterTravelTo');
+  const checkDate = gv('filterCheckDate');
+  const search = (gv('globalSearch') || '').toLowerCase().trim();
+
+  filteredRecords = fareRecords.filter(r => {
+    if(origin && r.origin !== origin) return false;
+    if(destination && r.destination !== destination) return false;
+    if(airline && r.airline !== airline) return false;
+    if(cabin && r.cabin !== cabin) return false;
+    if(season && r.season !== season) return false;
+    if(dtd && r.dtdGroup !== dtd) return false;
+    if(channelType && r.channelType !== channelType) return false;
+    if(channelName && r.channelName !== channelName) return false;
+    if(pos && r.pointOfSale !== pos) return false;
+    if(travelFrom && r.travelDate < travelFrom) return false;
+    if(travelTo && r.travelDate > travelTo) return false;
+    if(checkDate && r.checkDate !== checkDate) return false;
+    if(search){
+      const hay = [r.origin,r.destination,r.airline,r.flightNumber,r.channelType,r.channelName,r.season,r.snapshot,r.fareFamily,r.bookingClass,r.sourceReference,r.notes,r.checker].join(' ').toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  renderTable();
+  renderKPI();
+  renderCompactAnalysis();
+}
+
+function resetFilters(){
+  ['filterOrigin','filterDestination','filterAirline','filterCabin','filterSeason','filterDTD','filterChannelType','filterChannelName','filterPOS','filterTravelFrom','filterTravelTo','filterCheckDate','globalSearch'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  applyFilters();
+}
+
+/* =========================================================
+   RENDER MASTER
+========================================================= */
+function renderAll(){
+  populateFilterOptions();
+  filteredRecords = [...fareRecords];
+  applyFilters();
+}
+
+/* =========================================================
+   RENDER TABLE (history)
+========================================================= */
+function renderTable(){
+  const tbody = document.getElementById('fareTableBody');
+  tbody.innerHTML = '';
+  if(!filteredRecords.length){
+    tbody.innerHTML = `<tr><td colspan="18" class="empty">No fare records found. Add a new check to get started.</td></tr>`;
+    return;
+  }
+  const sorted = [...filteredRecords].sort((a,b) => {
+    const da = `${a.checkDate} ${a.checkTime || ''}`;
+    const db = `${b.checkDate} ${b.checkTime || ''}`;
+    return db.localeCompare(da);
+  });
+
+  sorted.forEach(r => {
+    const tr = document.createElement('tr');
+    const is9G = r.airline === '9G';
+    tr.innerHTML = `
+      <td>${escapeHTML(formatDate(r.checkDate))}${r.checkTime ? `<div class="usd-cell">${escapeHTML(r.checkTime)}</div>` : ''}</td>
+      <td>${escapeHTML(formatDate(r.travelDate))}</td>
+      <td><span class="tag tag-blue">${escapeHTML(r.dtd || '')}</span></td>
+      <td>${escapeHTML(r.season || '')}</td>
+      <td class="route-cell">${escapeHTML(r.origin || '')} → ${escapeHTML(r.destination || '')}</td>
+      <td><span class="tag ${is9G ? 'tag-9g' : 'tag-gray'}">${escapeHTML(r.airline || '')}</span></td>
+      <td>${escapeHTML(r.flightNumber || '—')}</td>
+      <td>${escapeHTML(r.cabin || '')}</td>
+      <td>${escapeHTML(r.channelName || '')}<div class="usd-cell">${escapeHTML(r.channelType || '')}</div></td>
+      <td>${escapeHTML(r.pointOfSale || '—')}</td>
+      <td>${escapeHTML(r.fareSourceType || '')}</td>
+      <td class="fare-cell">${formatMoney(r.totalFare)}<div class="usd-cell">${escapeHTML(r.currency || '')}</div></td>
+      <td class="usd-cell">${formatMoney(r.totalUSD, 2)}</td>
+      <td class="usd-cell">${formatMoney(r.allInUSD, 2)}</td>
+      <td>${escapeHTML(r.checkedBaggage || '—')} / ${escapeHTML(r.cabinBaggage || '—')}</td>
+      <td>${escapeHTML(r.snapshot || '—')}</td>
+      <td>${escapeHTML(r.checker || '—')}</td>
+      <td>
+        <button class="btn btn-light btn-small" onclick="editRecord('${r.id}')">Edit</button>
+        <button class="btn btn-navy btn-small" onclick="cloneRecord('${r.id}')">Clone</button>
+        <button class="btn btn-danger btn-small" onclick="deleteRecord('${r.id}')">Del</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* =========================================================
+   KPIs (with conditional gap logic)
+========================================================= */
+function renderKPI(){
+  const records = filteredRecords;
+  document.getElementById('kpiRecords').innerText = records.length;
+  const airlines = new Set(records.map(r => r.airline).filter(Boolean));
+  const airlineList = [...airlines].slice(0, 4).join(', ') + (airlines.size > 4 ? '…' : '');
+  document.getElementById('kpiAirlines').innerText = airlines.size;
+  document.getElementById('kpiAirlineList').innerText = airlineList || '—';
+  const channels = new Set(records.map(r => r.channelName).filter(Boolean));
+  document.getElementById('kpiChannels').innerText = channels.size;
+
+  const nineG = records.filter(r => r.airline === '9G');
+  const competitors = records.filter(r => r.airline !== '9G');
+  const low9G = getLowestRecordUSD(nineG);
+  const lowMarket = getLowestRecordUSD(competitors);
+
+  document.getElementById('kpi9G').innerText = low9G ? '$' + formatMoney(low9G.totalUSD, 0) : '—';
+  document.getElementById('kpi9GSub').innerText = low9G
+    ? `${formatMoney(low9G.totalFare)} ${low9G.currency} · ${low9G.origin}→${low9G.destination}`
+    : 'No 9G data yet';
+
+  document.getElementById('kpiMarket').innerText = lowMarket ? '$' + formatMoney(lowMarket.totalUSD, 0) : '—';
+  document.getElementById('kpiMarketAirline').innerText = lowMarket
+    ? `${lowMarket.airline} · ${lowMarket.channelName}`
+    : 'Competitor';
+
+  const kpiGap = document.getElementById('kpiGap');
+  const kpiGapPercent = document.getElementById('kpiGapPercent');
+  kpiGap.className = 'kpi-value';
+  kpiGapPercent.className = 'kpi-sub';
+
+  // Gap is only meaningful if filter is narrow enough (route + cabin at minimum)
+  const routeFilter = document.getElementById('filterOrigin').value && document.getElementById('filterDestination').value;
+  const cabinFilter = document.getElementById('filterCabin').value;
+
+  if(low9G && lowMarket){
+    if(!routeFilter || !cabinFilter){
+      kpiGap.innerText = 'N/A';
+      kpiGapPercent.innerText = 'Filter route + cabin to see gap';
+      kpiGapPercent.classList.add('status-orange');
+    } else {
+      const gap = Number(low9G.totalUSD) - Number(lowMarket.totalUSD);
+      const pct = Number(lowMarket.totalUSD) ? gap / Number(lowMarket.totalUSD) * 100 : 0;
+      kpiGap.innerText = `${gap >= 0 ? '+' : ''}$${formatMoney(Math.abs(gap), 0)}`;
+      kpiGapPercent.innerText = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% vs market lowest`;
+      if(gap > 0){ kpiGap.classList.add('status-red'); kpiGapPercent.classList.add('status-red'); }
+      else if(gap < 0){ kpiGap.classList.add('status-green'); kpiGapPercent.classList.add('status-green'); }
+    }
+  } else {
+    kpiGap.innerText = '—';
+    kpiGapPercent.innerText = 'Need both 9G & competitor data';
+  }
+}
+
+function getLowestRecordUSD(records){
+  const valid = records.filter(r => r.totalUSD > 0);
+  if(!valid.length) return null;
+  return valid.reduce((lo, cur) => (Number(cur.totalUSD) < Number(lo.totalUSD) ? cur : lo));
+}
+
+function getAvgUSD(records){
+  const valid = records.filter(r => r.totalUSD > 0);
+  if(!valid.length) return 0;
+  return valid.reduce((sum, r) => sum + Number(r.totalUSD), 0) / valid.length;
+}
+
+/* =========================================================
+   ANALYSIS RENDERING
+========================================================= */
+function renderCompactAnalysis(){
+  renderGroupedAnalysis('dtdAnalysis', DTD_GROUPS, 'dtdGroup', false);
+  const channels = [...new Set(filteredRecords.map(r => r.channelType).filter(Boolean))];
+  renderGroupedAnalysis('channelAnalysis', channels, 'channelType', false);
+  const seasons = [...new Set(filteredRecords.map(r => r.season).filter(Boolean))];
+  renderGroupedAnalysis('seasonAnalysis', seasons, 'season', false);
+}
+
+function renderFullDTD(){
+  renderGroupedAnalysis('dtdAnalysisFull', DTD_GROUPS, 'dtdGroup', true);
+}
+function renderFullChannel(){
+  const channels = [...new Set(filteredRecords.map(r => r.channelType).filter(Boolean))];
+  renderGroupedAnalysis('channelAnalysisFull', channels, 'channelType', true);
+}
+function renderFullSeason(){
+  const seasons = [...new Set(filteredRecords.map(r => r.season).filter(Boolean))];
+  renderGroupedAnalysis('seasonAnalysisFull', seasons, 'season', true);
+}
+
+function renderGroupedAnalysis(tbodyId, groups, key, full){
+  const tbody = document.getElementById(tbodyId);
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  const validGroups = groups.filter(g => filteredRecords.some(r => r[key] === g));
+  if(!validGroups.length){
+    tbody.innerHTML = `<tr><td colspan="${full ? 7 : 5}" class="empty">No data.</td></tr>`;
+    return;
+  }
+  validGroups.forEach(group => {
+    const records = filteredRecords.filter(r => r[key] === group);
+    const nineG = records.filter(r => r.airline === '9G');
+    const comp = records.filter(r => r.airline !== '9G');
+    const low9G = getLowestRecordUSD(nineG);
+    const lowComp = getLowestRecordUSD(comp);
+    let gapText = '—', gapClass = '', pctText = '—';
+    if(low9G && lowComp){
+      const gap = Number(low9G.totalUSD) - Number(lowComp.totalUSD);
+      const pct = Number(lowComp.totalUSD) ? gap / Number(lowComp.totalUSD) * 100 : 0;
+      gapText = `${gap >= 0 ? '+' : ''}$${formatMoney(Math.abs(gap), 0)}`;
+      pctText = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+      gapClass = gap > 0 ? 'status-red' : gap < 0 ? 'status-green' : '';
+    }
+    const tr = document.createElement('tr');
+    if(full){
+      tr.innerHTML = `
+        <td><b>${escapeHTML(group)}</b></td>
+        <td>${low9G ? '$'+formatMoney(low9G.totalUSD, 0) : '—'}</td>
+        <td>${lowComp ? '$'+formatMoney(lowComp.totalUSD, 0) : '—'}</td>
+        <td class="${gapClass}">${gapText}</td>
+        <td class="${gapClass}">${pctText}</td>
+        <td>${nineG.length}</td>
+        <td>${comp.length}</td>
+      `;
+    } else {
+      tr.innerHTML = `
+        <td><b>${escapeHTML(group)}</b></td>
+        <td>${low9G ? '$'+formatMoney(low9G.totalUSD, 0) : '—'}</td>
+        <td>${lowComp ? '$'+formatMoney(lowComp.totalUSD, 0) : '—'}</td>
+        <td class="${gapClass}">${gapText}</td>
+        <td>${records.length}</td>
+      `;
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+/* =========================================================
+   ROUTE ANALYSIS
+========================================================= */
+function renderRouteAnalysis(){
+  const tbody = document.getElementById('routeAnalysis');
+  tbody.innerHTML = '';
+  // Group by route+cabin
+  const map = {};
+  filteredRecords.forEach(r => {
+    const key = `${r.origin}→${r.destination}|${r.cabin}`;
+    if(!map[key]) map[key] = { route:`${r.origin} → ${r.destination}`, cabin:r.cabin, records:[] };
+    map[key].records.push(r);
+  });
+  const keys = Object.keys(map).sort();
+  if(!keys.length){
+    tbody.innerHTML = `<tr><td colspan="9" class="empty">No records yet. Add fare checks to build route analysis.</td></tr>`;
+    return;
+  }
+  keys.forEach(k => {
+    const { route, cabin, records } = map[k];
+    const nineG = records.filter(r => r.airline === '9G');
+    const comp = records.filter(r => r.airline !== '9G');
+    const low9G = getLowestRecordUSD(nineG);
+    const lowComp = getLowestRecordUSD(comp);
+    const avgComp = getAvgUSD(comp);
+    const compAirlines = [...new Set(comp.map(r => r.airline))].sort().join(', ') || '—';
+    let gap = '—', gapClass = '', position = '—';
+    if(low9G && lowComp){
+      const g = Number(low9G.totalUSD) - Number(lowComp.totalUSD);
+      const pct = Number(lowComp.totalUSD) ? g / Number(lowComp.totalUSD) * 100 : 0;
+      gap = `${g >= 0 ? '+' : ''}$${formatMoney(Math.abs(g),0)} (${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%)`;
+      gapClass = g > 0 ? 'status-red' : g < 0 ? 'status-green' : '';
+      // Position: rank of 9G in sorted list of all lowest per airline
+      const perAirline = {};
+      records.forEach(r => {
+        if(!perAirline[r.airline] || r.totalUSD < perAirline[r.airline]) perAirline[r.airline] = r.totalUSD;
+      });
+      const sortedAirlines = Object.entries(perAirline).sort((a,b) => a[1] - b[1]);
+      const rank = sortedAirlines.findIndex(x => x[0] === '9G') + 1;
+      position = rank > 0 ? `#${rank} of ${sortedAirlines.length}` : '—';
+    }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="route-cell">${escapeHTML(route)}</td>
+      <td>${escapeHTML(cabin || '—')}</td>
+      <td>${low9G ? '$'+formatMoney(low9G.totalUSD, 0) : '—'}</td>
+      <td>${lowComp ? '$'+formatMoney(lowComp.totalUSD, 0) : '—'}</td>
+      <td>${avgComp ? '$'+formatMoney(avgComp, 0) : '—'}</td>
+      <td class="${gapClass}">${gap}</td>
+      <td>${position}</td>
+      <td>${records.length}</td>
+      <td><span class="usd-cell">${escapeHTML(compAirlines)}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* =========================================================
+   PRICE MOVEMENT
+========================================================= */
+function populateMovementDropdowns(){
+  const origins = uniqueValues('origin');
+  const dests = uniqueValues('destination');
+  const channels = uniqueValues('channelType');
+  const oSel = document.getElementById('movOrigin');
+  const dSel = document.getElementById('movDestination');
+  const cSel = document.getElementById('movChannelType');
+  const currentO = oSel.value, currentD = dSel.value, currentC = cSel.value;
+  oSel.innerHTML = '<option value="">Any</option>';
+  dSel.innerHTML = '<option value="">Any</option>';
+  cSel.innerHTML = '<option value="">Any</option>';
+  origins.forEach(v => { const o = document.createElement('option'); o.value=v; o.textContent=v; oSel.appendChild(o); });
+  dests.forEach(v => { const o = document.createElement('option'); o.value=v; o.textContent=v; dSel.appendChild(o); });
+  channels.forEach(v => { const o = document.createElement('option'); o.value=v; o.textContent=v; cSel.appendChild(o); });
+  oSel.value = currentO; dSel.value = currentD; cSel.value = currentC;
+}
+
+function renderMovement(){
+  const origin = document.getElementById('movOrigin').value;
+  const dest = document.getElementById('movDestination').value;
+  const cabin = document.getElementById('movCabin').value;
+  const travelDate = document.getElementById('movTravelDate').value;
+  const chType = document.getElementById('movChannelType').value;
+
+  let recs = fareRecords.filter(r => r.totalUSD > 0);
+  if(origin) recs = recs.filter(r => r.origin === origin);
+  if(dest) recs = recs.filter(r => r.destination === dest);
+  if(cabin) recs = recs.filter(r => r.cabin === cabin);
+  if(travelDate) recs = recs.filter(r => r.travelDate === travelDate);
+  if(chType) recs = recs.filter(r => r.channelType === chType);
+
+  drawMovementChart(recs);
+  renderMovementTable(recs);
+}
+
+function renderMovementTable(recs){
+  const tbody = document.getElementById('movementTable');
+  tbody.innerHTML = '';
+  if(!recs.length){
+    tbody.innerHTML = `<tr><td colspan="7" class="empty">No data for this selection.</td></tr>`;
+    return;
+  }
+  const sorted = [...recs].sort((a,b) => a.checkDate.localeCompare(b.checkDate));
+  sorted.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHTML(formatDate(r.checkDate))} ${escapeHTML(r.checkTime || '')}</td>
+      <td><span class="tag ${r.airline === '9G' ? 'tag-9g' : 'tag-gray'}">${escapeHTML(r.airline)}</span></td>
+      <td>${escapeHTML(r.channelName)}<div class="usd-cell">${escapeHTML(r.channelType)}</div></td>
+      <td>${escapeHTML(r.cabin || '')}</td>
+      <td>${escapeHTML(formatDate(r.travelDate))}</td>
+      <td class="fare-cell">$${formatMoney(r.totalUSD, 0)}</td>
+      <td class="usd-cell">${escapeHTML(r.notes || '—')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function drawMovementChart(recs){
+  const cont = document.getElementById('chartContainer');
+  if(!recs.length){
+    cont.innerHTML = `<div class="empty">No records match this selection. Adjust filters to see the price curve.</div>`;
+    return;
+  }
+
+  // Group by airline
+  const byAirline = {};
+  recs.forEach(r => {
+    if(!byAirline[r.airline]) byAirline[r.airline] = [];
+    byAirline[r.airline].push({ date: r.checkDate, usd: Number(r.totalUSD) });
+  });
+  Object.keys(byAirline).forEach(a => {
+    byAirline[a].sort((x,y) => x.date.localeCompare(y.date));
+  });
+
+  const airlines = Object.keys(byAirline).sort();
+  const allDates = [...new Set(recs.map(r => r.checkDate))].sort();
+  const minDate = new Date(allDates[0] + 'T00:00:00');
+  const maxDate = new Date(allDates[allDates.length - 1] + 'T00:00:00');
+  const dayRange = Math.max(1, Math.round((maxDate - minDate) / (1000*60*60*24)));
+  const allUsd = recs.map(r => r.totalUSD);
+  const minUsd = Math.min(...allUsd);
+  const maxUsd = Math.max(...allUsd);
+  const usdRange = Math.max(1, maxUsd - minUsd);
+  const yMin = Math.floor(minUsd * 0.95);
+  const yMax = Math.ceil(maxUsd * 1.05);
+
+  const W = 900, H = 340;
+  const marginL = 60, marginR = 20, marginT = 20, marginB = 50;
+  const plotW = W - marginL - marginR;
+  const plotH = H - marginT - marginB;
+
+  function xPos(dateStr){
+    const d = new Date(dateStr + 'T00:00:00');
+    if(dayRange === 0) return marginL + plotW / 2;
+    return marginL + ((d - minDate) / (1000*60*60*24)) / dayRange * plotW;
+  }
+  function yPos(usd){
+    return marginT + (1 - (usd - yMin) / (yMax - yMin)) * plotH;
+  }
+
+  // Grid lines Y (5)
+  const yTicks = [];
+  for(let i = 0; i <= 5; i++){
+    const v = yMin + (yMax - yMin) * (i / 5);
+    yTicks.push({ v, y: yPos(v) });
+  }
+
+  // X ticks (up to 8)
+  const xTicksCount = Math.min(8, allDates.length);
+  const xTicks = [];
+  for(let i = 0; i < xTicksCount; i++){
+    const idx = Math.floor(i * (allDates.length - 1) / Math.max(1, xTicksCount - 1));
+    const dateStr = allDates[idx];
+    xTicks.push({ d: dateStr, x: xPos(dateStr) });
+  }
+
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  // Y grid + labels
+  yTicks.forEach(t => {
+    svg += `<line x1="${marginL}" y1="${t.y}" x2="${marginL + plotW}" y2="${t.y}" stroke="#e5e2d8" stroke-width="1" stroke-dasharray="2,4"/>`;
+    svg += `<text x="${marginL - 8}" y="${t.y + 4}" text-anchor="end" font-size="10" fill="#6b7280" font-family="Inter">$${formatMoney(t.v, 0)}</text>`;
+  });
+  // X axis line
+  svg += `<line x1="${marginL}" y1="${marginT + plotH}" x2="${marginL + plotW}" y2="${marginT + plotH}" stroke="#c9c5b8"/>`;
+  svg += `<line x1="${marginL}" y1="${marginT}" x2="${marginL}" y2="${marginT + plotH}" stroke="#c9c5b8"/>`;
+  // X labels
+  xTicks.forEach(t => {
+    svg += `<text x="${t.x}" y="${marginT + plotH + 16}" text-anchor="middle" font-size="10" fill="#6b7280" font-family="Inter">${formatDate(t.d)}</text>`;
+    svg += `<line x1="${t.x}" y1="${marginT + plotH}" x2="${t.x}" y2="${marginT + plotH + 4}" stroke="#c9c5b8"/>`;
+  });
+  // Y-axis title
+  svg += `<text x="${marginL - 45}" y="${marginT + plotH / 2}" text-anchor="middle" font-size="10" fill="#0a2540" font-family="Inter" font-weight="600" transform="rotate(-90 ${marginL - 45} ${marginT + plotH / 2})">Total fare (USD)</text>`;
+  // X-axis title
+  svg += `<text x="${marginL + plotW / 2}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#0a2540" font-family="Inter" font-weight="600">Check date</text>`;
+
+  // Lines per airline
+  airlines.forEach((airline, i) => {
+    const color = airline === '9G' ? '#c9a961' : AIRLINE_COLORS[(i + 1) % AIRLINE_COLORS.length];
+    const pts = byAirline[airline];
+    if(pts.length > 1){
+      let d = '';
+      pts.forEach((p, idx) => {
+        d += (idx === 0 ? 'M' : 'L') + xPos(p.date) + ',' + yPos(p.usd) + ' ';
+      });
+      svg += `<path d="${d}" stroke="${color}" stroke-width="${airline === '9G' ? 3 : 2}" fill="none" opacity="0.9"/>`;
+    }
+    pts.forEach(p => {
+      svg += `<circle cx="${xPos(p.date)}" cy="${yPos(p.usd)}" r="${airline === '9G' ? 5 : 4}" fill="${color}" stroke="#fff" stroke-width="1.5"><title>${airline} · ${p.date} · $${formatMoney(p.usd, 0)}</title></circle>`;
+    });
+  });
+
+  svg += '</svg>';
+
+  // Legend
+  let legend = '<div class="chart-legend">';
+  airlines.forEach((a, i) => {
+    const color = a === '9G' ? '#c9a961' : AIRLINE_COLORS[(i + 1) % AIRLINE_COLORS.length];
+    legend += `<div class="legend-item"><span class="legend-dot" style="background:${color}"></span><b>${escapeHTML(a)}</b> · ${byAirline[a].length} checks</div>`;
+  });
+  legend += '</div>';
+
+  cont.innerHTML = svg + legend;
+}
+
+/* =========================================================
+   INSIGHTS (auto-generated text)
+========================================================= */
+function renderInsights(){
+  const list = document.getElementById('insightList');
+  list.innerHTML = '';
+  const recs = filteredRecords.length ? filteredRecords : fareRecords;
+  if(!recs.length){
+    list.innerHTML = `<div class="empty">No data yet. Add fare records to see insights.</div>`;
+    return;
+  }
+  const insights = [];
+
+  // 1. Overall position
+  const nineG = recs.filter(r => r.airline === '9G');
+  const comp = recs.filter(r => r.airline !== '9G');
+  if(nineG.length && comp.length){
+    const avg9G = getAvgUSD(nineG);
+    const avgComp = getAvgUSD(comp);
+    const diff = avg9G - avgComp;
+    const pct = avgComp > 0 ? diff / avgComp * 100 : 0;
+    const cls = diff > 0 ? 'insight-red' : 'insight-green';
+    const label = diff > 0 ? `9G averages higher than market` : `9G averages lower than market`;
+    insights.push({
+      cls, title: label,
+      body: `Across ${nineG.length} 9G checks and ${comp.length} competitor checks, 9G averages <b>$${formatMoney(avg9G,0)}</b> vs competitor average <b>$${formatMoney(avgComp,0)}</b> (<b>${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%</b>).`
+    });
+  }
+
+  // 2. Cheapest route where 9G is above market
+  const routeGaps = {};
+  const routes = [...new Set(recs.map(r => `${r.origin}→${r.destination}`))];
+  routes.forEach(rt => {
+    const [o, d] = rt.split('→');
+    const rrs = recs.filter(r => r.origin === o && r.destination === d);
+    const n9 = rrs.filter(r => r.airline === '9G');
+    const cc = rrs.filter(r => r.airline !== '9G');
+    const l9 = getLowestRecordUSD(n9);
+    const lc = getLowestRecordUSD(cc);
+    if(l9 && lc){
+      routeGaps[rt] = { gap: l9.totalUSD - lc.totalUSD, pct: (l9.totalUSD - lc.totalUSD) / lc.totalUSD * 100, low9G: l9, lowComp: lc };
+    }
+  });
+  const worst = Object.entries(routeGaps).filter(([,v]) => v.gap > 0).sort((a,b) => b[1].pct - a[1].pct)[0];
+  if(worst){
+    const [rt, v] = worst;
+    insights.push({
+      cls: 'insight-red', title: `Widest gap: ${rt}`,
+      body: `9G is <b>+${v.pct.toFixed(1)}%</b> (<b>+$${formatMoney(v.gap, 0)}</b>) above the cheapest competitor here. Cheapest competitor: <b>${v.lowComp.airline}</b> at $${formatMoney(v.lowComp.totalUSD,0)} via ${v.lowComp.channelName}.`
+    });
+  }
+  const best = Object.entries(routeGaps).filter(([,v]) => v.gap < 0).sort((a,b) => a[1].pct - b[1].pct)[0];
+  if(best){
+    const [rt, v] = best;
+    insights.push({
+      cls: 'insight-green', title: `Strongest position: ${rt}`,
+      body: `9G is <b>${v.pct.toFixed(1)}%</b> (<b>$${formatMoney(v.gap, 0)}</b>) below the cheapest competitor here. Undercut vs <b>${v.lowComp.airline}</b> ($${formatMoney(v.lowComp.totalUSD,0)}).`
+    });
+  }
+
+  // 3. Channel spread
+  const chMap = {};
+  recs.forEach(r => {
+    const key = `${r.airline}|${r.origin}→${r.destination}|${r.cabin}|${r.travelDate}`;
+    if(!chMap[key]) chMap[key] = [];
+    chMap[key].push(r);
+  });
+  let widest = null;
+  Object.entries(chMap).forEach(([k, arr]) => {
+    if(arr.length >= 2){
+      const min = Math.min(...arr.map(a => a.totalUSD));
+      const max = Math.max(...arr.map(a => a.totalUSD));
+      const spread = max - min;
+      const pct = min > 0 ? spread / min * 100 : 0;
+      if(!widest || spread > widest.spread){
+        widest = { k, min, max, spread, pct, arr };
+      }
+    }
+  });
+  if(widest && widest.spread > 0){
+    const parts = widest.k.split('|');
+    const cheapest = widest.arr.reduce((lo, cur) => cur.totalUSD < lo.totalUSD ? cur : lo);
+    const expensive = widest.arr.reduce((hi, cur) => cur.totalUSD > hi.totalUSD ? cur : hi);
+    insights.push({
+      cls: 'insight-gold', title: `Widest channel spread`,
+      body: `<b>${parts[0]}</b> on ${parts[1]} (${parts[2]}, travel ${formatDate(parts[3])}) shows a spread of <b>$${formatMoney(widest.spread, 0)}</b> (${widest.pct.toFixed(1)}%) between channels. Cheapest: <b>${cheapest.channelName}</b> at $${formatMoney(cheapest.totalUSD, 0)}; most expensive: <b>${expensive.channelName}</b> at $${formatMoney(expensive.totalUSD, 0)}.`
+    });
+  }
+
+  // 4. DTD trend for 9G
+  if(nineG.length >= 3){
+    const byDtd = {};
+    nineG.forEach(r => {
+      if(!byDtd[r.dtdGroup]) byDtd[r.dtdGroup] = [];
+      byDtd[r.dtdGroup].push(r.totalUSD);
+    });
+    const avgs = Object.entries(byDtd).map(([g, arr]) => ({ g, avg: arr.reduce((s, x) => s + x, 0) / arr.length })).sort((a, b) => DTD_GROUPS.indexOf(a.g) - DTD_GROUPS.indexOf(b.g));
+    if(avgs.length >= 2){
+      const first = avgs[0], last = avgs[avgs.length - 1];
+      const diff = last.avg - first.avg;
+      const pct = first.avg > 0 ? diff / first.avg * 100 : 0;
+      insights.push({
+        cls: '',
+        title: `9G booking-window trend`,
+        body: `9G fares average <b>$${formatMoney(first.avg, 0)}</b> at <b>${first.g}</b> and <b>$${formatMoney(last.avg, 0)}</b> at <b>${last.g}</b> (${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% shift closer to departure).`
+      });
+    }
+  }
+
+  // 5. Most-tracked competitor
+  if(comp.length){
+    const cnt = {};
+    comp.forEach(r => { cnt[r.airline] = (cnt[r.airline] || 0) + 1; });
+    const top = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+    insights.push({
+      cls: '',
+      title: `Most-tracked competitor`,
+      body: `<b>${top[0]}</b> has ${top[1]} fare checks logged — your primary reference competitor.`
+    });
+  }
+
+  if(!insights.length){
+    list.innerHTML = `<div class="empty">Not enough data yet to generate insights. Add more fare checks (with both 9G and competitors) to see comparisons.</div>`;
+    return;
+  }
+
+  insights.forEach(i => {
+    const div = document.createElement('div');
+    div.className = 'insight ' + (i.cls || '');
+    div.innerHTML = `<div class="insight-title">${i.title}</div>${i.body}`;
+    list.appendChild(div);
+  });
+}
+
+/* =========================================================
+   SETTINGS: FX EDITOR
+========================================================= */
+function renderFxTable(){
+  const tbody = document.getElementById('fxTableBody');
+  tbody.innerHTML = '';
+  fxRates.forEach((f, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${escapeHTML(f.code)}</b></td>
+      <td>${escapeHTML(f.name)}</td>
+      <td><input type="number" step="any" data-fx-idx="${idx}" value="${f.rate}" oninput="updateFxRateValue(${idx}, this.value)"></td>
+      <td><span class="tag tag-gray">${escapeHTML(f.region)}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateFxRateValue(idx, val){
+  fxRates[idx].rate = Number(val) || 1;
+}
+
+function saveFxRates(){
+  saveFxRatesToStorage();
+  populateStaticDropdowns();
+  alert('FX rates saved. New records will use these defaults.');
+}
+
+function resetFxDefaults(){
+  if(!confirm('Reset all FX rates to defaults?')) return;
+  fxRates = JSON.parse(JSON.stringify(DEFAULT_FX));
+  saveFxRatesToStorage();
+  renderFxTable();
+  populateStaticDropdowns();
+}
+
+function renderStorageInfo(){
+  const info = document.getElementById('storageInfo');
+  const recordsBytes = new Blob([JSON.stringify(fareRecords)]).size;
+  const fxBytes = new Blob([JSON.stringify(fxRates)]).size;
+  info.innerHTML = `
+    Records stored: <b>${fareRecords.length}</b><br>
+    Records size: <b>${(recordsBytes / 1024).toFixed(1)} KB</b><br>
+    FX rates size: <b>${(fxBytes / 1024).toFixed(1)} KB</b><br>
+    Storage key: <b>${STORAGE_KEY}</b>
+  `;
+}
+
+/* =========================================================
+   IMPORT / EXPORT
+========================================================= */
+function exportCSV(){
+  if(!fareRecords.length){ alert('No data to export.'); return; }
+  const headers = [
+    'Check Date','Check Time','Travel Date','DTD','DTD Group','Snapshot','Season','Day Type','Trip Type','Checker',
+    'Origin','Destination','Airline','Flight Number','Cabin','Departure Time','Arrival Time','Flight Type','Aircraft','Availability',
+    'Transit 1','Layover 1 (min)','Segment 2 Flight','Transit 2','Total Journey (hrs)',
+    'Channel Type','Channel Name','Fare Source Type','Point of Sale','Pax Type','Source Reference','Screenshot URL',
+    'Currency','FX Rate','Base Fare','Tax','Other Fee','Total Fare','Total USD','Ancillary','All-in Fare','All-in USD',
+    'Fare Family','Booking Class','Checked Baggage','Cabin Baggage','Meal','Refundable','Changeable','Fare Rules','Notes'
+  ];
+  const rows = fareRecords.map(r => [
+    r.checkDate, r.checkTime, r.travelDate, r.dtd, r.dtdGroup, r.snapshot, r.season, r.dayType, r.tripType, r.checker,
+    r.origin, r.destination, r.airline, r.flightNumber, r.cabin, r.departureTime, r.arrivalTime, r.flightType, r.aircraft, r.availability,
+    r.transit1, r.layover1, r.segment2, r.transit2, r.totalJourney,
+    r.channelType, r.channelName, r.fareSourceType, r.pointOfSale, r.paxType, r.sourceReference, r.screenshotUrl,
+    r.currency, r.fxRate, r.baseFare, r.tax, r.otherFee, r.totalFare, r.totalUSD, r.ancillary, r.allInFare, r.allInUSD,
+    r.fareFamily, r.bookingClass, r.checkedBaggage, r.cabinBaggage, r.meal, r.refundable, r.changeable, r.fareRules, r.notes
+  ]);
+  const csv = [headers, ...rows].map(row => row.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const today = new Date().toISOString().slice(0,10);
+  link.href = url; link.download = `SPA_FARE_MONITOR_${today}.csv`;
+  document.body.appendChild(link); link.click(); link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportJSON(){
+  const payload = { version: 'v4', exportedAt: new Date().toISOString(), fareRecords, fxRates };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const today = new Date().toISOString().slice(0,10);
+  link.href = url; link.download = `SPA_FARE_BACKUP_${today}.json`;
+  document.body.appendChild(link); link.click(); link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const data = JSON.parse(e.target.result);
+      if(!confirm(`Import ${data.fareRecords?.length || 0} records? This will replace all current data.`)) return;
+      if(Array.isArray(data.fareRecords)) fareRecords = data.fareRecords;
+      if(Array.isArray(data.fxRates)) { fxRates = data.fxRates; saveFxRatesToStorage(); }
+      saveData();
+      renderAll();
+      alert('Import successful.');
+    }catch(err){
+      alert('Invalid JSON file.');
+    }
+  };
+  reader.readAsText(file);
+  evt.target.value = '';
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+function showModal(title, body, confirmLabel, onConfirm){
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalBody').innerHTML = body;
+  const btn = document.getElementById('modalConfirmBtn');
+  btn.innerText = confirmLabel;
+  btn.onclick = () => { closeModal(); onConfirm(); };
+  document.getElementById('modalBackdrop').classList.add('active');
+}
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('active');
+  pendingSaveRecord = null;
+}
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+function formatMoney(value, decimals=0){
+  if(value === null || value === undefined || value === '') return '—';
+  const n = Number(value);
+  if(Number.isNaN(n)) return value;
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: decimals, minimumFractionDigits: decimals }).format(n);
+}
+
+function formatDate(date){
+  if(!date) return '';
+  const p = String(date).split('-');
+  if(p.length !== 3) return date;
+  return `${p[2]}/${p[1]}/${p[0]}`;
+}
+
+function escapeHTML(v){
+  return String(v ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+</script>
+</body>
+</html>
